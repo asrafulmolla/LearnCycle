@@ -1,0 +1,19 @@
+<!-- templates/books/detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ book.title }}</title>
+</head>
+<body>
+    <h1>{{ book.title }}</h1>
+    <p>By {{ book.author }}</p>
+    <p>Price: ${{ book.price }}</p>
+    <p>Condition: {{ book.get_condition_display }}</p>
+    <p>{{ book.description }}</p>
+    {% if book.image %}
+        <img src="{{ book.image.url }}" alt="{{ book.title }}">
+    {% endif %}
+    <a href="{% url 'cart_add' book.id %}" class="btn">Add to Cart</a>
+    <a href="{% url 'book_list' %}">← Back to all books</a>
+</body>
+</html>

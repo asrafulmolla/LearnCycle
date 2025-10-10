@@ -1,0 +1,99 @@
+<!-- templates/books/list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books for Sale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- 🌟 Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2">
+                <span class="text-3xl">📚</span>
+                <h1 class="text-2xl font-bold text-blue-600">BookStore</h1>
+            </a>
+            <nav class="flex items-center space-x-6 text-gray-700 font-medium">
+                <a href="/" class="hover:text-blue-600 transition">Home</a>
+                <a href="{% url 'donate_book' %}" class="hover:text-blue-600 transition">Donate a Book</a>
+                <a href="{% url 'donation_history' %}" class="hover:text-blue-600 transition">My Donations</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 📖 Main Content -->
+    <main class="max-w-7xl mx-auto mt-10 px-6">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 border-l-4 border-blue-600 pl-3">
+            Books for Sale
+        </h2>
+
+        {% if books %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for book in books %}
+                    <div class="bg-white rounded-2xl shadow-md hover:shadow-lg transition overflow-hidden border border-gray-100">
+                        {% if book.image %}
+                            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-full h-56 object-cover">
+                        {% else %}
+                            <div class="w-full h-56 bg-gray-200 flex items-center justify-center text-gray-400 text-sm">
+                                No Image Available
+                            </div>
+                        {% endif %}
+                        <div class="p-5">
+                            <h3 class="text-xl font-semibold text-gray-900 truncate">{{ book.title }}</h3>
+                            <p class="text-gray-600 mt-1"><strong>Author:</strong> {{ book.author }}</p>
+                            <p class="text-gray-600"><strong>Price:</strong> ${{ book.price }}</p>
+                            <p class="text-gray-600"><strong>Condition:</strong> {{ book.get_condition_display }}</p>
+                            <div class="mt-5">
+                                <a href="{% url 'book_detail' book.id %}" 
+                                   class="inline-block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-medium transition">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center mt-24 text-gray-500">
+                <p class="text-lg font-medium">No books available at the moment.</p>
+                <p class="mt-2">Try adding a new one or check back later!</p>
+            </div>
+        {% endif %}
+    </main>
+
+    <!-- 🌍 Footer -->
+    <footer class="mt-16 bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm text-gray-600">
+            <div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">About Us</h4>
+                <p>Your trusted platform to buy, sell, and donate books easily. We connect readers across the world.</p>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="/" class="hover:text-blue-600 transition">Home</a></li>
+                    <li><a href="{% url 'donate_book' %}" class="hover:text-blue-600 transition">Donate a Book</a></li>
+                    <li><a href="{% url 'donation_history' %}" class="hover:text-blue-600 transition">My Donations</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold text-gray-900 mb-3">Contact</h4>
+                <p>Email: support@bookstore.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+                <div class="flex space-x-4 mt-3">
+                    <a href="#" class="hover:text-blue-600 transition">Facebook</a>
+                    <a href="#" class="hover:text-blue-600 transition">Twitter</a>
+                    <a href="#" class="hover:text-blue-600 transition">Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-50 py-4 text-center text-gray-500 text-xs border-t">
+            © {{ year|default:2025 }} BookStore — All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

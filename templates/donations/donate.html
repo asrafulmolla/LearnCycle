@@ -1,0 +1,8 @@
+<!-- templates/donations/donate.html -->
+<h2>Donate a Book</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Donation</button>
+</form>
+<a href="{% url 'donation_history' %}">View My Donations</a>

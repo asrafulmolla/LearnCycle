@@ -1,0 +1,25 @@
+<!-- templates/donations/history.html -->
+<h2>My Donation History</h2>
+
+{% if donations %}
+    <ul>
+    {% for donation in donations %}
+        <li>
+            <strong>{{ donation.title }}</strong> by {{ donation.author }}<br>
+            Category: {{ donation.category.name }}<br>
+            Condition: {{ donation.get_condition_display }}<br>
+            Status: <strong>{{ donation.get_status_display }}</strong><br>
+            {% if donation.image %}
+                <img src="{{ donation.image.url }}" alt="{{ donation.title }}" width="100">
+            {% endif %}
+            <small>Submitted: {{ donation.created_at|date:"M d, Y" }}</small>
+        </li>
+        <hr>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven't donated any books yet.</p>
+{% endif %}
+
+<a href="{% url 'donate_book' %}">Donate a New Book</a> |
+<a href="{% url 'book_list' %}">Back to Books</a>

@@ -1,0 +1,34 @@
+<!-- templates/cart/detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+</head>
+<body>
+    <h1>🛒 Your Cart</h1>
+
+    {% if cart_items %}
+        <ul>
+            {% for item in cart_items %}
+                <li>
+                    {{ item.book.title }} - ${{ item.book.price }} × {{ item.quantity }}
+                    <a href="{% url 'cart_remove' item.book.id %}">Remove</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <p><strong>Total: ${{ total_price }}</strong></p>
+
+        <p>
+            <a href="{% url 'cart_clear' %}">Clear Cart</a> |
+            <a href="{% url 'checkout' %}">Proceed to Checkout</a>
+        </p>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'book_list' %}">← Continue Shopping</a>
+</body>
+</html>
