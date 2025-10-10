@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Books for Sale</title>
+    <title>LearnCycle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -14,12 +14,15 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="/" class="flex items-center gap-2">
                 <span class="text-3xl">📚</span>
-                <h1 class="text-2xl font-bold text-blue-600">BookStore</h1>
+                <h1 class="text-2xl font-bold text-blue-600">LearnCycle</h1>
             </a>
             <nav class="flex items-center space-x-6 text-gray-700 font-medium">
                 <a href="/" class="hover:text-blue-600 transition">Home</a>
                 <a href="{% url 'donate_book' %}" class="hover:text-blue-600 transition">Donate a Book</a>
                 <a href="{% url 'donation_history' %}" class="hover:text-blue-600 transition">My Donations</a>
+                <a href="{% url 'request_book' %}">Request a Book</a> 
+                <a href="{% url 'request_history' %}">My Requests</a>
+
             </nav>
         </div>
     </header>

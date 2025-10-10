@@ -1,0 +1,11 @@
+<h2>Request a Book</h2>
+<p>Can't find the book you're looking for? Request it here!</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Request</button>
+</form>
+
+<a href="{% url 'request_history' %}">View My Requests</a> |
+<a href="{% url 'book_list' %}">Back to Books</a>

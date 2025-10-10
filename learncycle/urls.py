@@ -23,10 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('', include('books.urls')),  # assuming books app handles homepage
-    # Add other app URLs here as needed:
     path('cart/', include('cart.urls')),
     path('donations/', include('donations.urls')),
     path('orders/', include('orders.urls')),
+    path('requests/', include('requests.urls')),
 ]
 
 # Serve media files during development

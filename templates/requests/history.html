@@ -1,0 +1,29 @@
+<h2>My Book Requests</h2>
+
+{% if requests %}
+    <ul>
+    {% for req in requests %}
+        <li>
+            <strong>{{ req.title }}</strong> by {{ req.author }}
+            <br>
+            {% if req.description %}
+                <em>Description:</em> {{ req.description }}<br>
+            {% endif %}
+            <small>Submitted: {{ req.created_at|date:"M d, Y" }}</small>
+            <br>
+            <strong>Status:</strong> 
+            {% if req.is_fulfilled %}
+                <span style="color: green;">✅ Fulfilled</span>
+            {% else %}
+                <span style="color: orange;">⏳ Pending</span>
+            {% endif %}
+            <hr>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven't requested any books yet.</p>
+{% endif %}
+
+<a href="{% url 'request_book' %}">Request a New Book</a> |
+<a href="{% url 'book_list' %}">Browse Books</a>
