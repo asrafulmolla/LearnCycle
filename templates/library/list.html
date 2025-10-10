@@ -1,0 +1,20 @@
+<h2>Digital Library</h2>
+<p>Download eBooks and study materials (PDFs only).</p>
+
+{% if ebooks %}
+    <ul>
+    {% for book in ebooks %}
+        <li>
+            <strong>{{ book.title }}</strong> by {{ book.author }}<br>
+            Uploaded: {{ book.uploaded_at|date:"M d, Y" }} by {{ book.uploaded_by.username }}<br>
+            <a href="{% url 'library_download' book.pk %}" target="_blank">View PDF</a> |
+            <a href="{% url 'library_download' book.pk %}" download>Download</a>
+        </li>
+        <hr>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No eBooks available yet.</p>
+{% endif %}
+
+<a href="{% url 'book_list' %}">← Back to Books</a>

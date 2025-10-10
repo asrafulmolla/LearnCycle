@@ -22,11 +22,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('', include('books.urls')),  # assuming books app handles homepage
     path('cart/', include('cart.urls')),
     path('donations/', include('donations.urls')),
     path('orders/', include('orders.urls')),
     path('requests/', include('requests.urls')),
+    path('library/', include('library.urls')),
+    path('', include('books.urls')),  # assuming books app handles homepage
 ]
 
 # Serve media files during development
