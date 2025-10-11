@@ -9,12 +9,6 @@ class DonationForm(forms.ModelForm):
         fields = ['title', 'author', 'category', 'condition', 'description', 'image']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
-            'condition': forms.Select(choices=[
-                ('new', 'New'),
-                ('like_new', 'Like New'),
-                ('good', 'Good'),
-                ('fair', 'Fair'),
-            ])
         }
 
     def __init__(self, *args, **kwargs):

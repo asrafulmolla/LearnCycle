@@ -1,7 +1,20 @@
-<h2>Welcome, {{ user.username }}!</h2>
+{% extends 'base.html' %}
+{% block title %}My Profile - LearnCycle{% endblock %}
 
-<p>Email: {{ user.email }}</p>
-<p>First Name: {{ user.first_name }}</p>
-<p>Last Name: {{ user.last_name }}</p>
+{% block content %}
+<div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-md w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-6 text-center">My Profile</h2>
 
-<a href="{% url 'logout' %}">Logout</a>
+    <div class="space-y-3 text-slate-700">
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Book Points:</strong> {{ user.profile.book_points }}</p>
+    </div>
+
+    <div class="mt-6 text-center">
+      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Continue Shopping</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

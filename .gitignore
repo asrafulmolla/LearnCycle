@@ -17,3 +17,4 @@ media/
 /static/
 *.sqlite3
 *.db
+test.txt

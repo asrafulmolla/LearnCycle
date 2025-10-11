@@ -1,15 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h2>Login</h2>
-    <form method="post">
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-md w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-6 text-center">Login</h2>
+
+    <form method="post" class="space-y-4">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Login</button>
+        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition transform hover:scale-105">Login</button>
     </form>
-    <p><a href="{% url 'register' %}">Don't have an account? Register</a></p>
-</body>
-</html>
+
+    <p class="mt-4 text-center text-slate-500">
+      <a href="{% url 'register' %}" class="text-emerald-600 hover:text-emerald-700 font-medium">Don't have an account? Register</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

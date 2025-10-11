@@ -16,6 +16,8 @@ def cart_detail(request):
         'total_price': total_price
     })
 
+
+
 @login_required
 def cart_add(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -37,6 +39,6 @@ def cart_remove(request, book_id):
 @login_required
 def cart_clear(request):
     cart = Cart.objects.get(user=request.user)
-    cart.cartitem_set.all().delete()  # ✅ Use default reverse relation name
+    cart.cartitem_set.all().delete()  
     messages.success(request, "Cart cleared.")
     return redirect('cart_detail')
