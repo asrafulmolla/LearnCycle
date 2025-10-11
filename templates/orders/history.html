@@ -1,0 +1,19 @@
+<h2>Order History</h2>
+
+{% if orders %}
+    <ul>
+    {% for order in orders %}
+        <li>
+            <strong>Order #{{ order.id }}</strong> — ${{ order.total_price }}<br>
+            Status: {{ order.get_status_display }}<br>
+            Placed: {{ order.created_at|date:"M d, Y" }}<br>
+            <a href="{% url 'order_detail' order.id %}">View Details</a>
+        </li>
+        <hr>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven't placed any orders yet.</p>
+{% endif %}
+
+<a href="{% url 'book_list' %}">Browse Books</a>

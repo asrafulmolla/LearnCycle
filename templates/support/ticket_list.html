@@ -1,0 +1,13 @@
+<!-- templates/support/ticket_list.html -->
+<h2>Support Tickets</h2>
+<a href="{% url 'support:create_ticket' %}">Create New Ticket</a>
+<ul>
+{% for ticket in tickets %}
+    <li>
+        <strong>{{ ticket.subject }}</strong> ({{ ticket.get_status_display }})
+        <a href="{% url 'support:ticket_chat' ticket.id %}">Chat</a>
+    </li>
+{% empty %}
+    <li>No tickets yet.</li>
+{% endfor %}
+</ul>

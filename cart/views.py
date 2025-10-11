@@ -37,6 +37,6 @@ def cart_remove(request, book_id):
 @login_required
 def cart_clear(request):
     cart = Cart.objects.get(user=request.user)
-    cart.items.all().delete()  # Assuming you have a related name 'items'
+    cart.cartitem_set.all().delete()  # ✅ Use default reverse relation name
     messages.success(request, "Cart cleared.")
     return redirect('cart_detail')

@@ -27,6 +27,7 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('requests/', include('requests.urls')),
     path('library/', include('library.urls')),
+    path('support/', include('support.urls')),
     path('', include('books.urls')),  # assuming books app handles homepage
 ]
 

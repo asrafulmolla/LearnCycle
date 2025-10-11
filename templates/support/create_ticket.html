@@ -1,0 +1,8 @@
+<!-- templates/support/create_ticket.html -->
+<h2>Create Support Ticket</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<a href="{% url 'support:ticket_list' %}">Back to Tickets</a>

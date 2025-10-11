@@ -1,0 +1,17 @@
+<h2>Checkout</h2>
+<p>Review your order before confirming:</p>
+
+<ul>
+{% for item in cart_items %}
+    <li>{{ item.quantity }} × {{ item.book.title }} — ${{ item.book.price }}</li>
+{% endfor %}
+</ul>
+
+<p><strong>Total: ${{ total_price }}</strong></p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirm Order</button>
+</form>
+
+<a href="{% url 'cart_detail' %}">← Back to Cart</a>
