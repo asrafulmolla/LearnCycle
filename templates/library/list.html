@@ -1,20 +1,36 @@
-<h2>Digital Library</h2>
-<p>Download eBooks and study materials (PDFs only).</p>
+{% extends 'base.html' %}
+{% block title %}Digital Library - LearnCycle{% endblock %}
 
-{% if ebooks %}
-    <ul>
-    {% for book in ebooks %}
-        <li>
-            <strong>{{ book.title }}</strong> by {{ book.author }}<br>
-            Uploaded: {{ book.uploaded_at|date:"M d, Y" }} by {{ book.uploaded_by.username }}<br>
-            <a href="{% url 'library_download' book.pk %}" target="_blank">View PDF</a> |
-            <a href="{% url 'library_download' book.pk %}" download>Download</a>
+{% block content %}
+<div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-4xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-2">Digital Library</h2>
+    <p class="text-slate-500 mb-6">Download eBooks, notes, and study materials (PDF only).</p>
+
+    {% if ebooks %}
+      <ul class="space-y-4">
+      {% for book in ebooks %}
+        <li class="p-4 bg-slate-50 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition">
+          <div class="flex justify-between items-start">
+            <div>
+              <strong class="text-lg text-slate-800">{{ book.title }}</strong> by {{ book.author }}<br>
+              <span class="text-xs text-slate-400">Uploaded: {{ book.uploaded_at|date:"M d, Y" }} by {{ book.uploaded_by.username }}</span>
+            </div>
+            <div class="flex gap-3 mt-2 sm:mt-0">
+              <a href="{% url 'library_download' book.pk %}" target="_blank" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow transition">View PDF</a>
+              <a href="{% url 'library_download' book.pk %}" download class="px-3 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg font-medium shadow transition">Download</a>
+            </div>
+          </div>
         </li>
-        <hr>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No eBooks available yet.</p>
-{% endif %}
+      {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-slate-500">No digital books available yet.</p>
+    {% endif %}
 
-<a href="{% url 'book_list' %}">← Back to Books</a>
+    <div class="mt-6">
+      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Back to Books</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

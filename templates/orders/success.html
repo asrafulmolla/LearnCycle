@@ -1,4 +1,16 @@
-<h1>✅ Order Successful!</h1>
-<p>Thank you for your purchase. Your order is now being processed.</p>
-<a href="{% url 'order_history' %}">View Order History</a> |
-<a href="{% url 'book_list' %}">Continue Shopping</a>
+{% extends 'base.html' %}
+{% block title %}Order Successful! - LearnCycle{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-md w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8 text-center">
+    <h1 class="text-4xl mb-4">Order Successful!</h1>
+    <p class="text-slate-600 mb-6">Thank you for your purchase. Your order is now being processed.</p>
+
+    <div class="flex justify-center gap-4">
+      <a href="{% url 'order_history' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition transform hover:scale-105">View Order History</a>
+      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

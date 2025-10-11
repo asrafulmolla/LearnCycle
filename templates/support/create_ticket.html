@@ -1,8 +1,16 @@
 <!-- templates/support/create_ticket.html -->
-<h2>Create Support Ticket</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-<a href="{% url 'support:ticket_list' %}">Back to Tickets</a>
+<div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-3xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Create Support Ticket</h2>
+
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition transform hover:scale-105">Submit</button>
+    </form>
+
+    <div class="mt-6">
+      <a href="{% url 'support:ticket_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">Back to Tickets</a>
+    </div>
+  </div>
+</div>

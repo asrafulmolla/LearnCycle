@@ -1,29 +1,43 @@
-<h2>My Book Requests</h2>
+{% extends 'base.html' %}
+{% block title %}My Book Requests - LearnCycle{% endblock %}
 
-{% if requests %}
-    <ul>
-    {% for req in requests %}
-        <li>
-            <strong>{{ req.title }}</strong> by {{ req.author }}
-            <br>
-            {% if req.description %}
-                <em>Description:</em> {{ req.description }}<br>
-            {% endif %}
-            <small>Submitted: {{ req.created_at|date:"M d, Y" }}</small>
-            <br>
-            <strong>Status:</strong> 
-            {% if req.is_fulfilled %}
-                <span style="color: green;">✅ Fulfilled</span>
-            {% else %}
-                <span style="color: orange;">⏳ Pending</span>
-            {% endif %}
-            <hr>
+{% block content %}
+<div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-3xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-6">My Book Requests</h2>
+
+    {% if requests %}
+      <ul class="space-y-4">
+      {% for req in requests %}
+        <li class="p-4 bg-slate-50 border border-slate-200 rounded-xl shadow-sm">
+          <div class="flex justify-between items-start">
+            <div>
+              <strong class="text-lg text-slate-800">{{ req.title }}</strong> by {{ req.author }}<br>
+              {% if req.description %}
+                <em class="text-sm text-slate-500">Description:</em> {{ req.description }}<br>
+              {% endif %}
+            </div>
+            <div>
+              <strong>Status:</strong>
+              {% if req.is_fulfilled %}
+                <span class="text-green-600 font-semibold">Fulfilled</span>
+              {% else %}
+                <span class="text-orange-500 font-semibold">Pending</span>
+              {% endif %}
+            </div>
+          </div>
+          <div class="mt-2 text-xs text-slate-400">Submitted: {{ req.created_at|date:"M d, Y" }}</div>
         </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>You haven't requested any books yet.</p>
-{% endif %}
+      {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-slate-500">You haven't requested any books yet.</p>
+    {% endif %}
 
-<a href="{% url 'request_book' %}">Request a New Book</a> |
-<a href="{% url 'book_list' %}">Browse Books</a>
+    <div class="mt-6 flex gap-4">
+      <a href="{% url 'request_book' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition transform hover:scale-105">Request a New Book</a>
+      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Back to Books</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

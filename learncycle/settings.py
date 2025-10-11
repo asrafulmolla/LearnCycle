@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'library',
     'support',
     'orders',
-    'channels', # For real-time features
+    'channels', # For real-time features 
 ]
 
 # Channels configuration for WebSocket support 
@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'accounts.context_processors.cart_item_count',
             ],
         },
     },

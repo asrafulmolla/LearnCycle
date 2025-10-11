@@ -25,5 +25,10 @@ class Book(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='books/', blank=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['category', 'is_available']),
+        ]
+    
     def __str__(self):
         return self.title

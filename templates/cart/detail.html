@@ -1,34 +1,35 @@
-<!-- templates/cart/detail.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Your Cart</title>
-</head>
-<body>
-    <h1>🛒 Your Cart</h1>
+{% extends 'base.html' %}
+{% block title %}Your Cart{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-3xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Your Shopping Cart</h2>
 
     {% if cart_items %}
-        <ul>
-            {% for item in cart_items %}
-                <li>
-                    {{ item.book.title }} - ${{ item.book.price }} × {{ item.quantity }}
-                    <a href="{% url 'cart_remove' item.book.id %}">Remove</a>
-                </li>
-            {% endfor %}
-        </ul>
+      <ul class="space-y-3 mb-6">
+      {% for item in cart_items %}
+        <li class="flex justify-between items-center bg-slate-50 border border-slate-200 rounded-lg p-3 shadow-sm">
+          <div>
+            {{ item.quantity }} × {{ item.book.title }}
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-semibold">${{ item.book.price }}</span>
+            <a href="{% url 'cart_remove' item.book.id %}" class="text-rose-500 hover:text-rose-700 text-sm font-medium">Remove</a>
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
 
-        <p><strong>Total: ${{ total_price }}</strong></p>
-
-        <p>
-            <a href="{% url 'cart_clear' %}">Clear Cart</a> |
-            <a href="{% url 'checkout' %}">Proceed to Checkout</a>
-        </p>
+      <p class="text-lg font-bold mb-6">Total: ${{ total_price }}</p>
+      <a href="{% url 'checkout' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition transform hover:scale-105">Proceed to Checkout</a>
     {% else %}
-        <p>Your cart is empty.</p>
+      <p class="text-slate-500 mb-6">Your cart is empty.</p>
     {% endif %}
 
-    <br>
-    <a href="{% url 'book_list' %}">← Continue Shopping</a>
-</body>
-</html>
+    <div class="mt-6">
+      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Continue Shopping</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

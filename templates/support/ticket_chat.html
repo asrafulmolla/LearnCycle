@@ -1,34 +1,39 @@
 <!-- templates/support/ticket_chat.html -->
-<h2>Chat: {{ ticket.subject }}</h2>
-<div id="chat-messages" style="height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;">
-    {% for msg in messages %}
-        <div>
-            <strong>{{ msg.sender.username }}:</strong> {{ msg.message }}
-            <small>{{ msg.timestamp|date:"H:i" }}</small>
-        </div>
-    {% endfor %}
-</div>
+<div class="min-h-screen flex flex-col items-center justify-start py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+  <div class="max-w-3xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-6 flex flex-col">
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-4">Chat: {{ ticket.subject }}</h2>
 
-<form id="chat-form" style="margin-top: 10px;">
-    {% csrf_token %}
-    <input type="text" id="message-input" placeholder="Type your message..." style="width: 80%;" required>
-    <button type="submit">Send</button>
-</form>
+    <div id="chat-messages" class="flex-1 overflow-y-auto border border-slate-300 rounded-lg p-4 mb-4 h-96 bg-slate-50">
+        {% for msg in messages %}
+            <div class="mb-2">
+                <strong>{{ msg.sender.username }}:</strong> {{ msg.message }}
+                <small class="text-xs text-slate-500">{{ msg.timestamp|date:"H:i" }}</small>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form id="chat-form" class="flex gap-2" style="margin-top: 10px;">
+        {% csrf_token %}
+        <input type="text" id="message-input" placeholder="Type your message..." class="flex-1 border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition transform hover:scale-105">Send</button>
+    </form>
+  </div>
+</div>
 
 <script>
     const ticketId = {{ ticket.id }};
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Connect to WebSocket
     const chatSocket = new WebSocket(
-        'ws://' + window.location.host +
+        (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host +
         '/ws/chat/' + ticketId + '/'
     );
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         const messageDiv = document.createElement('div');
-        messageDiv.innerHTML = `<strong>${data.username}:</strong> ${data.message} <small>${new Date(data.timestamp).toLocaleTimeString()}</small>`;
+        messageDiv.className = 'mb-2';
+        messageDiv.innerHTML = `<strong>${data.username}:</strong> ${data.message} <small class='text-xs text-slate-500'>${new Date(data.timestamp).toLocaleTimeString()}</small>`;
         document.getElementById('chat-messages').appendChild(messageDiv);
         document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
     };
@@ -42,9 +47,7 @@
         const messageInput = document.getElementById('message-input');
         const message = messageInput.value.trim();
         if (message) {
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
+            chatSocket.send(JSON.stringify({ 'message': message }));
             messageInput.value = '';
         }
     };

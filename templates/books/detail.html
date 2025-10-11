@@ -1,19 +1,127 @@
-<!-- templates/books/detail.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ book.title }}</title>
-</head>
-<body>
-    <h1>{{ book.title }}</h1>
-    <p>By {{ book.author }}</p>
-    <p>Price: ${{ book.price }}</p>
-    <p>Condition: {{ book.get_condition_display }}</p>
-    <p>{{ book.description }}</p>
-    {% if book.image %}
-        <img src="{{ book.image.url }}" alt="{{ book.title }}">
-    {% endif %}
-    <a href="{% url 'cart_add' book.id %}" class="btn">Add to Cart</a>
-    <a href="{% url 'book_list' %}">← Back to all books</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}{{ book.title }} - LearnCycle{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen py-12">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <!-- Breadcrumb -->
+    <div class="text-sm text-gray-500 mb-6">
+      <a href="{% url 'book_list' %}" class="hover:text-emerald-600 transition">Books</a> /
+      <span class="text-gray-700 font-medium">{{ book.title }}</span>
+    </div>
+
+    <!-- Book Detail Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white shadow-xl rounded-3xl overflow-hidden border border-gray-100">
+      
+      <!-- Book Image -->
+      <div class="relative bg-gray-100 flex items-center justify-center group">
+        {% if book.image %}
+          <img src="{{ book.image.url }}" alt="{{ book.title }}" 
+               class="w-full h-[480px] object-cover group-hover:scale-105 transition-transform duration-500">
+        {% else %}
+          <div class="flex items-center justify-center w-full h-[480px] bg-gradient-to-br from-emerald-100 to-teal-100">
+            <svg class="w-24 h-24 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 
+                       5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 
+                       16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 
+                       18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+        {% endif %}
+
+        <!-- Condition Badge -->
+        <div class="absolute top-5 left-5">
+          <span class="px-4 py-1 text-sm font-semibold rounded-full shadow-lg backdrop-blur-sm 
+            {% if book.condition == 'new' %}
+              bg-emerald-600 text-white
+            {% elif book.condition == 'like_new' %}
+              bg-blue-600 text-white
+            {% elif book.condition == 'good' %}
+              bg-yellow-500 text-white
+            {% elif book.condition == 'fair' %}
+              bg-orange-500 text-white
+            {% else %}
+              bg-gray-600 text-white
+            {% endif %}">
+            {{ book.get_condition_display }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Book Info -->
+      <div class="p-8 md:p-10 flex flex-col justify-center animate-fadeIn">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">{{ book.title }}</h1>
+        <p class="text-lg text-gray-700 mb-2"><strong>Author:</strong> {{ book.author }}</p>
+        <p class="text-lg text-gray-700 mb-2"><strong>Category:</strong> {{ book.category.name }}</p>
+        <p class="text-lg text-gray-700 mb-6"><strong>Condition:</strong> {{ book.get_condition_display }}</p>
+
+        <div class="mb-6">
+          <span class="text-4xl font-bold text-emerald-600">${{ book.price }}</span>
+        </div>
+
+        <p class="text-gray-600 leading-relaxed mb-8">{{ book.description|linebreaks }}</p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="{% url 'cart_add' book.id %}" 
+             class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 
+                    text-white py-3 rounded-xl font-semibold text-center shadow-lg transform hover:scale-105 transition-all duration-300">
+            Add to Cart
+          </a>
+
+          <a href="{% url 'book_list' %}" 
+             class="flex-1 border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 
+                    py-3 rounded-xl font-semibold text-center transition-all duration-300">
+            ← Back to Books
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Books Section -->
+{% if related_books %}
+<div class="mt-16">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Books</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    {% for related in related_books %}
+    <div class="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+      <a href="{% url 'book_detail' related.id %}">
+        <div class="relative">
+          {% if related.image %}
+            <img src="{{ related.image.url }}" alt="{{ related.title }}" 
+                 class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+          {% else %}
+            <div class="w-full h-56 bg-gray-100 flex items-center justify-center text-gray-400">
+              <span class="text-sm">No Image</span>
+            </div>
+          {% endif %}
+          <div class="absolute top-3 left-3">
+            <span class="bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
+              {{ related.get_condition_display }}
+            </span>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="font-semibold text-gray-900 truncate">{{ related.title }}</h3>
+          <p class="text-sm text-gray-600 mb-2">{{ related.author }}</p>
+          <span class="text-emerald-600 font-semibold">${{ related.price }}</span>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Animations -->
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+</style>
+{% endblock %}

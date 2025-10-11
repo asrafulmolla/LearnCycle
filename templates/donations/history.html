@@ -1,25 +1,83 @@
-<!-- templates/donations/history.html -->
-<h2>My Donation History</h2>
+{% extends 'base.html' %}
+{% block title %}My Donations - LearnCycle{% endblock %}
 
-{% if donations %}
-    <ul>
-    {% for donation in donations %}
-        <li>
-            <strong>{{ donation.title }}</strong> by {{ donation.author }}<br>
-            Category: {{ donation.category.name }}<br>
-            Condition: {{ donation.get_condition_display }}<br>
-            Status: <strong>{{ donation.get_status_display }}</strong><br>
-            {% if donation.image %}
-                <img src="{{ donation.image.url }}" alt="{{ donation.title }}" width="100">
-            {% endif %}
-            <small>Submitted: {{ donation.created_at|date:"M d, Y" }}</small>
-        </li>
-        <hr>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>You haven't donated any books yet.</p>
-{% endif %}
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-12 px-4 flex flex-col items-center relative overflow-hidden">
 
-<a href="{% url 'donate_book' %}">Donate a New Book</a> |
-<a href="{% url 'book_list' %}">Back to Books</a>
+    <!-- Animated background blobs -->
+    <div class="absolute inset-0 -z-10">
+        <div class="absolute w-72 h-72 bg-emerald-300/30 rounded-full blur-3xl top-16 left-12 animate-pulse"></div>
+        <div class="absolute w-96 h-96 bg-teal-300/30 rounded-full blur-3xl bottom-16 right-12 animate-pulse"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-emerald-700">My Donation History</h2>
+        <p class="text-gray-600 mt-2">Track your donated books and their approval status.</p>
+    </div>
+
+    {% if donations %}
+        <div class="w-full max-w-4xl bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl border border-gray-100 p-8">
+            <ul class="divide-y divide-gray-200">
+                {% for donation in donations %}
+                    <li class="py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                        <!-- Image -->
+                        <div class="flex-shrink-0">
+                            {% if donation.image %}
+                                <img src="{{ donation.image.url }}" alt="{{ donation.title }}" class="w-24 h-32 object-cover rounded-xl shadow-md border border-gray-200">
+                            {% else %}
+                                <div class="w-24 h-32 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400 text-sm font-medium border border-dashed border-gray-300">
+                                    No Image
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Book Info -->
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-gray-800">{{ donation.title }}</h3>
+                            <p class="text-gray-600 text-sm mb-1">by {{ donation.author }}</p>
+                            <p class="text-sm text-gray-500">Category: <span class="font-medium text-emerald-700">{{ donation.category.name }}</span></p>
+                            <p class="text-sm text-gray-500">Condition: <span class="font-medium">{{ donation.condition }}</span></p>
+                            <p class="mt-2 text-sm">
+                                Status: 
+                                {% if donation.status == 'approved' %}
+                                    <span class="inline-flex items-center text-green-600 font-semibold">Approved <span class="ml-1 text-xs text-green-700">(+10 points)</span></span>
+                                {% elif donation.status == 'rejected' %}
+                                    <span class="inline-flex items-center text-red-600 font-semibold">Rejected</span>
+                                {% else %}
+                                    <span class="inline-flex items-center text-amber-500 font-semibold">Pending</span>
+                                {% endif %}
+                            </p>
+                            <p class="text-xs text-gray-400 mt-3">Submitted on {{ donation.created_at|date:"M d, Y" }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 border border-gray-100 text-center max-w-md">
+            <p class="text-gray-600 text-lg">You haven’t donated any books yet.</p>
+            <a href="{% url 'donate_book' %}" 
+               class="mt-4 inline-block bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition-transform transform hover:scale-105">
+               Donate Your First Book
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Footer Links -->
+    <div class="mt-8 text-sm text-gray-600 flex gap-4">
+        <a href="{% url 'donate_book' %}" class="hover:text-emerald-600 font-medium transition">Donate a New Book</a>
+        <a href="{% url 'book_list' %}" class="hover:text-emerald-600 font-medium transition">← Back to Books</a>
+    </div>
+</div>
+
+<style>
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fade-in 0.8s ease-out both;
+    }
+</style>
+{% endblock %}
