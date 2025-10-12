@@ -3,29 +3,117 @@
 
 {% block content %}
 <div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
-  <div class="max-w-3xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
-    <h2 class="text-2xl font-extrabold text-slate-800 mb-4">Checkout</h2>
-    <p class="text-slate-500 mb-6">Review your order before confirming:</p>
+  <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
 
-    <ul class="space-y-2 mb-6">
-    {% for item in cart_items %}
-        <li class="flex justify-between bg-slate-50 border border-slate-200 rounded-lg p-3 shadow-sm">
-          <span>{{ item.quantity }} × {{ item.book.title }}</span>
-          <span class="font-semibold">${{ item.book.price }}</span>
+    <!-- Left: Order Summary -->
+    <div>
+      <h2 class="text-2xl font-extrabold text-slate-800 mb-4">Your Order Summary</h2>
+      <ul class="space-y-4 mb-6">
+        {% for item in cart_items %}
+        <li class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg p-3 shadow-sm hover:bg-slate-100 transition">
+          <div class="flex items-center gap-3">
+            <img src="{{ item.book.image.url }}" alt="{{ item.book.title }}" class="w-12 h-16 object-cover rounded-lg shadow-sm">
+            <div>
+              <p class="font-medium text-slate-800">{{ item.book.title }}</p>
+              <p class="text-slate-500 text-sm">Quantity: {{ item.quantity }}</p>
+            </div>
+          </div>
+          <span class="font-semibold text-emerald-600">${{ item.subtotal|floatformat:2 }}</span>
         </li>
-    {% endfor %}
-    </ul>
+        {% endfor %}
+      </ul>
 
-    <p class="text-lg font-bold mb-6">Total: ${{ total_price }}</p>
-
-    <form method="post" class="space-y-4">
-        {% csrf_token %}
-        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition transform hover:scale-105">Confirm Order</button>
-    </form>
-
-    <div class="mt-6">
-      <a href="{% url 'cart_detail' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Back to Cart</a>
+      <div class="border-t border-slate-200 pt-4 flex justify-between items-center">
+        <span class="text-lg font-bold">Total:</span>
+        <span class="text-xl font-extrabold text-emerald-700">${{ total_price|floatformat:2 }}</span>
+      </div>
     </div>
+
+    <!-- Right: Checkout Form -->
+    <div>
+      <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Complete Your Order</h2>
+
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+
+        <!-- Address -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Shipping Address <span class="text-red-500">*</span></label>
+          <textarea name="address" rows="3" class="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-emerald-500" placeholder="Enter your delivery address" required></textarea>
+        </div>
+
+        <!-- Phone -->
+        <!-- Phone Number with Country Code -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-2">
+            Phone Number <span class="text-red-500">*</span>
+          </label>
+
+          <div class="flex gap-2">
+            <!-- Country Code -->
+            <select name="country_code" class="border border-slate-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-emerald-500">
+              <option value="+880" selected>🇧🇩 +880 (Bangladesh)</option>
+              <option value="+91">🇮🇳 +91 (India)</option>
+              <option value="+1">🇺🇸 +1 (USA)</option>
+              <option value="+44">🇬🇧 +44 (UK)</option>
+              <option value="+971">🇦🇪 +971 (UAE)</option>
+            </select>
+
+            <!-- Local Phone -->
+            <input
+              type="tel"
+              name="phone"
+              pattern="^\d{10,11}$"
+              title="Enter your 10–11 digit phone number (without country code)"
+              class="flex-1 border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-emerald-500"
+              placeholder="e.g., 1712345678"
+              required>
+          </div>
+
+          <p class="text-sm text-slate-500 mt-1">Example: +8801712345678</p>
+        </div>
+
+        <!-- Payment Method -->
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-3">Select Payment Method <span class="text-red-500">*</span></label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-3 border border-slate-200 rounded-lg p-3 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="payment_method" value="cod" required class="text-emerald-600 focus:ring-emerald-500">
+              <span class="text-slate-800 font-medium">Cash on Delivery</span>
+            </label>
+            <label class="flex items-center gap-3 border border-slate-200 rounded-lg p-3 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="payment_method" value="card" class="text-emerald-600 focus:ring-emerald-500">
+              <span class="text-slate-800 font-medium">Credit / Debit Card</span>
+            </label>
+            <label class="flex items-center gap-3 border border-slate-200 rounded-lg p-3 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="payment_method" value="mobile" class="text-emerald-600 focus:ring-emerald-500">
+              <span class="text-slate-800 font-medium">Mobile Banking (bKash / Nagad / Rocket)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Confirm Button -->
+        <div class="pt-4">
+          <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition transform hover:scale-105">
+            Confirm & Place Order
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-6">
+        <a href="{% url 'cart_detail' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Back to Cart</a>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<script>
+  const code = document.querySelector('[name="country_code"]');
+  const phone = document.querySelector('[name="phone"]');
+
+  phone.addEventListener('input', () => {
+    phone.value = phone.value.replace(/[^0-9]/g, '');  // allow digits only
+  });
+</script>
 {% endblock %}

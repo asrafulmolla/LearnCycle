@@ -4,31 +4,47 @@
 {% block content %}
 <div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
   <div class="max-w-4xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
-    <h2 class="text-2xl font-extrabold text-slate-800 mb-6">Order History</h2>
+    <h2 class="text-3xl font-extrabold text-slate-800 mb-6">Order History</h2>
 
     {% if orders %}
-      <ul class="space-y-4">
-      {% for order in orders %}
-        <li class="p-4 bg-slate-50 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition">
-          <div class="flex justify-between items-center mb-2">
+      <ul class="space-y-6">
+        {% for order in orders %}
+          <li class="bg-slate-50 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            
+            <!-- Order Info -->
             <div>
-              <strong>Order #{{ order.id }}</strong> — ${{ order.total_price }}<br>
-              <span class="text-sm text-slate-500">Placed: {{ order.created_at|date:"M d, Y" }}</span>
+              <p class="text-lg font-semibold">Order #{{ order.id }}</p>
+              <p class="text-slate-700">Total: <span class="font-bold text-emerald-700">${{ order.total_price|floatformat:2 }}</span></p>
+              <p class="text-sm text-slate-500">Placed on: {{ order.created_at|date:"M d, Y" }}</p>
             </div>
+
+            <!-- Status Badge -->
             <div>
-              <span class="text-sm font-semibold {% if order.get_status_display == 'Delivered' %}text-green-600{% else %}text-orange-500{% endif %}">{{ order.get_status_display }}</span>
+              {% if order.get_status_display == 'Delivered' %}
+                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">Delivered</span>
+              {% elif order.get_status_display == 'Cancelled' %}
+                <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-semibold">Cancelled</span>
+              {% else %}
+                <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm font-semibold">Pending</span>
+              {% endif %}
             </div>
-          </div>
-          <a href="{% url 'order_detail' order.id %}" class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow transition">View Details</a>
-        </li>
-      {% endfor %}
+
+            <!-- View Details Button -->
+            <div>
+              <a href="{% url 'order_detail' order.id %}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow transition transform hover:scale-105">
+                View Details
+              </a>
+            </div>
+          </li>
+        {% endfor %}
       </ul>
     {% else %}
-      <p class="text-slate-500">You haven't placed any orders yet.</p>
+      <p class="text-slate-500 mt-4 text-center">You haven't placed any orders yet.</p>
     {% endif %}
 
-    <div class="mt-6">
-      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">Browse Books</a>
+    <!-- Browse Books -->
+    <div class="mt-8 text-center">
+      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105 font-medium">Browse Books</a>
     </div>
   </div>
 </div>
