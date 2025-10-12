@@ -1,71 +1,124 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}Request a Book - LearnCycle{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
-  <div class="max-w-3xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
-    <div class="flex items-center justify-between mb-6">
-      <div class="flex items-center gap-4">
-        <svg class="w-12 h-12 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2" />
-        </svg>
-        <div>
-          <h2 class="text-2xl font-extrabold text-slate-800">Request a Book</h2>
-          <p class="text-sm text-slate-500">Can’t find the book you need? Request it and we’ll try to add it to our collection.</p>
-        </div>
-      </div>
-      <div class="text-sm text-slate-400">LearnCycle • Requests</div>
-    </div>
-
-    <form method="post" id="requestForm" class="space-y-6">
-      {% csrf_token %}
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label for="id_title" class="block text-sm font-medium text-slate-700">Title</label>
-          {{ form.title }}
-          <p class="mt-1 text-xs text-slate-400">Exact title helps us find the right edition.</p>
+<div class="min-h-screen bg-gradient-to-b from-white to-slate-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-start">
+      
+      <div class="px-4 sm:px-0 mb-12 lg:mb-0">
+        <h1 class="text-3xl font-extrabold text-slate-800 sm:text-4xl">
+          Your Book Request Journey
+        </h1>
+        <p class="mt-4 text-lg text-slate-600">
+          Curious about what happens after you request a book? Here’s a simple breakdown of our process to get the books you need into your hands.
+        </p>
+        
+        <div class="mt-8">
+          <img class="w-full rounded-2xl shadow-xl border border-slate-200" src="{% static 'images/LearnCycle Request Book Process.png' %}" alt="LearnCycle Book Request Process">
         </div>
 
-        <div>
-          <label for="id_author" class="block text-sm font-medium text-slate-700">Author</label>
-          {{ form.author }}
-          <p class="mt-1 text-xs text-slate-400">Optional but recommended.</p>
+        <div class="mt-10 space-y-8">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">1</div>
+            <div>
+              <h3 class="text-lg font-semibold text-slate-800">Browse & Request</h3>
+              <p class="mt-1 text-slate-500">You fill out the form with details about the book you're looking for. The more specific you are, the better!</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">2</div>
+            <div>
+              <h3 class="text-lg font-semibold text-slate-800">We Review & Source</h3>
+              <p class="mt-1 text-slate-500">Our team receives your request and checks its availability from our network of suppliers and donors.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">3</div>
+            <div>
+              <h3 class="text-lg font-semibold text-slate-800">Prepare for Delivery</h3>
+              <p class="mt-1 text-slate-500">Once sourced, we process the book and get it ready for pickup or delivery to your location.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">4</div>
+            <div>
+              <h3 class="text-lg font-semibold text-slate-800">Receive & Enjoy</h3>
+              <p class="mt-1 text-slate-500">You get notified that your book is ready. Now it's time to dive in and enjoy your new read!</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div>
-        <label for="id_edition" class="block text-sm font-medium text-slate-700">Edition / ISBN</label>
-        {{ form.edition }}
-        <p class="mt-1 text-xs text-slate-400">If you know the edition or ISBN, add it here.</p>
-      </div>
-
-      <div>
-        <label for="id_notes" class="block text-sm font-medium text-slate-700">Notes (optional)</label>
-        {{ form.notes }}
-      </div>
-
-      <div class="flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <button id="submitBtn" type="submit" class="inline-flex items-center gap-3 bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white font-semibold py-2 px-4 rounded-xl shadow-md transition transform active:scale-95">
-            <svg id="btnSpinner" class="w-5 h-5 animate-spin hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582A8 8 0 1112 20v-2" />
+      <div class="w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-4">
+             <svg class="w-10 h-10 text-emerald-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+              <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
             </svg>
-            <span id="btnText">Submit Request</span>
-          </button>
-
-          <a href="{% url 'request_history' %}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-700 hover:shadow">View My Requests</a>
+            <div>
+              <h2 class="text-2xl font-extrabold text-slate-800">Request a Book</h2>
+              <p class="text-sm text-slate-500">Can’t find the book you need? Let us know!</p>
+            </div>
+          </div>
+          <div class="text-sm text-slate-400 hidden sm:block">LearnCycle</div>
         </div>
 
-        <a href="{% url 'book_list' %}" class="text-sm text-slate-500 hover:text-slate-700">← Back to Books</a>
-      </div>
-    </form>
+        <form method="post" id="requestForm" class="space-y-6">
+          {% csrf_token %}
 
-    <div class="mt-6 text-xs text-slate-400">By submitting a request you agree to our <a href="#" class="underline">request policy</a>.</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="id_title" class="block text-sm font-medium text-slate-700">Title <span class="text-rose-500">*</span></label>
+              {{ form.title }}
+              <p class="mt-1 text-xs text-slate-400">Exact title helps us find the right edition.</p>
+            </div>
+            
+            <div>
+              <label for="id_author" class="block text-sm font-medium text-slate-700">Author</label>
+              {{ form.author }}
+              <p class="mt-1 text-xs text-slate-400">Optional but recommended.</p>
+            </div>
+          </div>
+          
+          <div>
+            <label for="id_edition" class="block text-sm font-medium text-slate-700">Edition / ISBN</label>
+            {{ form.edition }}
+            <p class="mt-1 text-xs text-slate-400">If you know the specific edition or ISBN, add it here.</p>
+          </div>
+          
+          <div>
+            <label for="id_notes" class="block text-sm font-medium text-slate-700">Additional Notes (optional)</label>
+            {{ form.notes }}
+            <p class="mt-1 text-xs text-slate-400">Any other details? e.g., language, publisher, or why you need it.</p>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+            <div class="flex items-center gap-3">
+              <button id="submitBtn" type="submit" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 text-white font-semibold py-2.5 px-5 rounded-lg shadow-md transition transform active:scale-95">
+                <svg id="btnSpinner" class="w-5 h-5 animate-spin hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span id="btnText">Submit Request</span>
+              </button>
+              
+              <a href="{% url 'request_history' %}" class="inline-flex items-center px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 hover:shadow-sm">My Requests</a>
+            </div>
+            
+            <a href="{% url 'book_list' %}" class="text-sm text-slate-500 hover:text-slate-700 transition">← Back to Library</a>
+          </div>
+        </form>
+
+        {% comment %} <div class="mt-6 text-center text-xs text-slate-400">By submitting a request you agree to our <a href="#" class="underline hover:text-slate-600">request policy</a>.</div> {% endcomment %}
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Inline script to enhance UX without changing server-side functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('requestForm');
@@ -73,28 +126,36 @@ document.addEventListener('DOMContentLoaded', function () {
   const btnSpinner = document.getElementById('btnSpinner');
   const btnText = document.getElementById('btnText');
 
-  // Add Tailwind-friendly classes to Django form widgets if not already set
-  // This will gracefully enhance inputs without altering how Django processes them
+  // Add Tailwind-friendly classes to Django form widgets
   Array.from(form.elements).forEach(el => {
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
-      el.classList.add('mt-1', 'block', 'w-full', 'rounded-lg', 'border', 'border-slate-200', 'shadow-sm', 'py-2', 'px-3', 'focus:ring-2', 'focus:ring-emerald-300', 'focus:border-emerald-500');
+        if (el.type !== 'checkbox' && el.type !== 'radio') {
+            el.classList.add('mt-1', 'block', 'w-full', 'rounded-lg', 'border', 'border-slate-300', 'bg-white', 'shadow-sm', 'py-2', 'px-3', 'focus:ring-2', 'focus:ring-emerald-400', 'focus:border-emerald-500', 'transition');
+        }
     }
   });
 
   form.addEventListener('submit', function (e) {
-    // simple client-side validation: ensure title exists
-    const title = form.querySelector('[name="title"]');
-    if (title && title.value.trim() === '') {
+    // Simple client-side validation: ensure title exists
+    const titleInput = form.querySelector('[name="title"]');
+    if (titleInput && titleInput.value.trim() === '') {
       e.preventDefault();
-      title.focus();
-      title.classList.add('ring-2', 'ring-rose-300');
+      titleInput.focus();
+      titleInput.classList.remove('border-slate-300');
+      titleInput.classList.add('border-rose-500', 'ring-rose-200');
+      // Remove error state on input
+      titleInput.addEventListener('input', () => {
+        titleInput.classList.remove('border-rose-500', 'ring-rose-200');
+        titleInput.classList.add('border-slate-300');
+      }, { once: true });
       return;
     }
 
-    // show spinner and disable button to avoid duplicate submits
+    // Show spinner and disable button to avoid duplicate submits
     btnSpinner.classList.remove('hidden');
     btnText.textContent = 'Submitting...';
     submitBtn.setAttribute('disabled', 'true');
+    submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
   });
 });
 </script>

@@ -30,10 +30,12 @@ INSTALLED_APPS = [
     'cart',
     'donations',
     'requests',
-    'library',
+    # 'library',
     'support',
     'orders',
     'channels', # For real-time features 
+    'pages',
+    'library.apps.LibraryConfig',
 ]
 
 # Channels configuration for WebSocket support 
@@ -88,6 +90,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 
 
 # Password validation

@@ -1,15 +1,23 @@
+# books/views.py
 from django.shortcuts import render, get_object_or_404
-from .models import Book, Category
 from django.db.models import Q
+from .models import Book, Category, BannerSlide
+from donations.models import Donation
 
 def book_list(request):
-    # Get all categories for the filter dropdown
     categories = Category.objects.all()
-    
-    # Start with all available books
-    books = Book.objects.filter(is_available=True)
+    banners = BannerSlide.objects.filter(is_active=True).order_by('order')  # ✅ Fetch banners
 
-     # === SEARCH ===
+    # Get regular books
+    books = Book.objects.filter(is_available=True)
+    
+    # Get approved donations
+    approved_donations = Donation.objects.filter(status='approved').select_related('category', 'user')
+    
+    # Combine both querysets
+    all_books = list(books) + list(approved_donations)
+    
+    # Handle search
     query = request.GET.get('q')
     if query:
         books = books.filter(
@@ -17,49 +25,73 @@ def book_list(request):
             Q(author__icontains=query) |
             Q(description__icontains=query)
         )
+        approved_donations = approved_donations.filter(
+            Q(title__icontains=query) |
+            Q(author__icontains=query) |
+            Q(description__icontains=query)
+        )
+        all_books = list(books) + list(approved_donations)
     
     # Handle category filter
     category_id = request.GET.get('category')
     if category_id and category_id.isdigit():
-        try:
-            Category.objects.get(id=category_id)
-            books = books.filter(category_id=category_id)
-        except Category.DoesNotExist:
-            pass  # Ignore invalid category
+        books = books.filter(category_id=category_id)
+        approved_donations = approved_donations.filter(category_id=category_id)
+        all_books = list(books) + list(approved_donations)
     
-    # Handle sorting
+   # Handle sorting
     sort = request.GET.get('sort')
     if sort:
         if sort == 'price_low':
-            books = books.order_by('price')
+            all_books = sorted(
+                all_books, 
+                key=lambda x: x.price if x.price is not None else float('inf')
+            )
         elif sort == 'price_high':
-            books = books.order_by('-price')
+            all_books = sorted(
+                all_books, 
+                key=lambda x: x.price if x.price is not None else float('-inf'),
+                reverse=True
+            )
         elif sort == 'title':
-            books = books.order_by('title')
+            all_books = sorted(all_books, key=lambda x: x.title or "")
         elif sort == '-created_at':
-            books = books.order_by('-created_at')
+            all_books = sorted(all_books, key=lambda x: x.created_at or "", reverse=True)
         elif sort == 'created_at':
-            books = books.order_by('created_at')
-        # 'featured' or default: no sorting (or add custom logic)
+            all_books = sorted(all_books, key=lambda x: x.created_at or "")
+
     
     return render(request, 'books/list.html', {
-        'books': books,
+        'books': all_books,
         'categories': categories,
+        'banners': banners,  # ✅ Pass to template
         'selected_category': int(category_id) if category_id and category_id.isdigit() else None,
         'selected_sort': sort,
         'query': query,
     })
 
+
 def book_detail(request, id):
-    book = get_object_or_404(Book, id=id)
-    
-    # Get related books from the same category (excluding current book)
-    related_books = Book.objects.filter(
-        category=book.category,
-        is_available=True
-    ).exclude(id=book.id)[:4]  # Limit to 4 books
+    # Try to get from Book model first
+    try:
+        book = Book.objects.get(id=id)
+        related_books = Book.objects.filter(
+            category=book.category,
+            is_available=True
+        ).exclude(id=book.id)[:4]
+    except Book.DoesNotExist:
+        # If not found, try Donation model
+        book = get_object_or_404(Donation, id=id, status='approved')
+        related_books = Donation.objects.filter(
+            category=book.category,
+            status='approved'
+        ).exclude(id=book.id)[:4]
     
     return render(request, 'books/detail.html', {
         'book': book,
         'related_books': related_books
     })
+
+
+def about(request):
+    return render(request, 'core/about.html') 
