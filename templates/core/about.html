@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}About Us - LearnCycle{% endblock %}
+
+{% block content %}
+<section class="bg-gradient-to-b from-emerald-50 to-white py-16">
+  <div class="max-w-6xl mx-auto px-6 md:px-12 lg:px-20 text-center">
+    <h1 class="text-4xl md:text-5xl font-extrabold text-emerald-700 mb-6">About <span class="text-emerald-500">LearnCycle</span></h1>
+    <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-10">
+      LearnCycle is a community-driven platform that connects readers, learners, and donors through the power of books.
+      Our mission is to make education accessible for everyone by promoting book sharing, sustainability, and lifelong learning.
+    </p>
+  </div>
+
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 px-6 md:px-12 lg:px-20">
+    <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-emerald-500">
+      <h3 class="text-xl font-semibold text-emerald-700 mb-3">Our Vision</h3>
+      <p class="text-gray-600 text-sm">To create a world where knowledge flows freely—empowering students, educators, and readers through book reuse and digital innovation.</p>
+    </div>
+    <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-emerald-500">
+      <h3 class="text-xl font-semibold text-emerald-700 mb-3">Our Mission</h3>
+      <p class="text-gray-600 text-sm">Encourage community book exchange, reduce educational waste, and make learning materials accessible to underprivileged learners.</p>
+    </div>
+    <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-emerald-500">
+      <h3 class="text-xl font-semibold text-emerald-700 mb-3">Join the Movement</h3>
+      <p class="text-gray-600 text-sm">Whether donating, selling, or buying books, every contribution helps build a sustainable cycle of learning for all.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

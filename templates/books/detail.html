@@ -56,25 +56,44 @@
         <p class="text-lg text-gray-700 mb-2"><strong>Category:</strong> {{ book.category.name }}</p>
         <p class="text-lg text-gray-700 mb-6"><strong>Condition:</strong> {{ book.get_condition_display }}</p>
 
+        <!-- Price or Free Tag -->
         <div class="mb-6">
-          <span class="text-4xl font-bold text-emerald-600">${{ book.price }}</span>
+            {% if book.price %}
+                <span class="text-4xl font-bold text-emerald-600">${{ book.price }}</span>
+            {% else %}
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl font-bold text-orange-600">Free</span>
+                    <span class="px-4 py-2 bg-orange-100 text-orange-800 text-sm font-bold rounded-full">
+                        Donated Book
+                    </span>
+                </div>
+            {% endif %}
         </div>
 
         <p class="text-gray-600 leading-relaxed mb-8">{{ book.description|linebreaks }}</p>
 
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="{% url 'cart_add' book.id %}" 
-             class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 
-                    text-white py-3 rounded-xl font-semibold text-center shadow-lg transform hover:scale-105 transition-all duration-300">
+        <!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row gap-4">
+    {% if book.price %}
+        <a href="{% url 'cart_add' book.id %}" 
+           class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 
+                  text-white py-3 rounded-xl font-semibold text-center shadow-lg transform hover:scale-105 transition-all duration-300">
             Add to Cart
-          </a>
+        </a>
+    {% else %}
+        <a href="{% url 'request_donated_book' book.id %}" 
+           class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 
+                  text-white py-3 rounded-xl font-semibold text-center shadow-lg transform hover:scale-105 transition-all duration-300">
+            Request This Book
+        </a>
+    {% endif %}
 
-          <a href="{% url 'book_list' %}" 
-             class="flex-1 border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 
-                    py-3 rounded-xl font-semibold text-center transition-all duration-300">
-            ← Back to Books
-          </a>
-        </div>
+    <a href="{% url 'book_list' %}" 
+       class="flex-1 border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 
+              py-3 rounded-xl font-semibold text-center transition-all duration-300">
+        ← Back to Books
+    </a>
+</div>
       </div>
     </div>
 

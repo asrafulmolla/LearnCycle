@@ -2,35 +2,56 @@
 {% block title %}Digital Library - LearnCycle{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
-  <div class="max-w-4xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
-    <h2 class="text-2xl font-extrabold text-slate-800 mb-2">Digital Library</h2>
-    <p class="text-slate-500 mb-6">Download eBooks, notes, and study materials (PDF only).</p>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50 py-16 px-6 sm:px-10 lg:px-20">
+  <div class="max-w-6xl mx-auto text-center mb-10">
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-800 mb-3 tracking-tight">Digital Library</h1>
+    <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+      Explore and download eBooks, notes, and learning materials in PDF format. Expand your knowledge anytime, anywhere.
+    </p>
+  </div>
 
-    {% if ebooks %}
-      <ul class="space-y-4">
+  {% if ebooks %}
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {% for book in ebooks %}
-        <li class="p-4 bg-slate-50 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition">
-          <div class="flex justify-between items-start">
-            <div>
-              <strong class="text-lg text-slate-800">{{ book.title }}</strong> by {{ book.author }}<br>
-              <span class="text-xs text-slate-400">Uploaded: {{ book.uploaded_at|date:"M d, Y" }} by {{ book.uploaded_by.username }}</span>
-            </div>
-            <div class="flex gap-3 mt-2 sm:mt-0">
-              <a href="{% url 'library_download' book.pk %}" target="_blank" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow transition">View PDF</a>
-              <a href="{% url 'library_download' book.pk %}" download class="px-3 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded-lg font-medium shadow transition">Download</a>
+        <div class="group bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition transform hover:-translate-y-1 duration-300">
+          
+          <!-- Book Cover -->
+          <div class="relative h-64 bg-slate-100 overflow-hidden">
+            {% if book.cover_image %}
+              <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+            {% else %}
+              <img src="{{ book.file.url|cut:'.pdf' }}_preview.jpg" alt="Preview" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+            {% endif %}
+          </div>
+
+          <!-- Book Info -->
+          <div class="p-6">
+            <h3 class="text-lg font-semibold text-slate-800 group-hover:text-emerald-700 transition">{{ book.title }}</h3>
+            <p class="text-sm text-slate-500 mt-1">by {{ book.author }}</p>
+            <p class="text-xs text-slate-400 mt-2">Uploaded on {{ book.uploaded_at|date:"M d, Y" }} by {{ book.uploaded_by.username }}</p>
+
+            <div class="flex gap-3 mt-5">
+              <a href="{% url 'library_download' book.pk %}" target="_blank" class="flex-1 text-center px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-medium shadow-lg transition-all">
+                View PDF
+              </a>
+              <a href="{% url 'library_download' book.pk %}" download class="flex-1 text-center px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-medium transition-all">
+                Download
+              </a>
             </div>
           </div>
-        </li>
+        </div>
       {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-slate-500">No digital books available yet.</p>
-    {% endif %}
-
-    <div class="mt-6">
-      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Back to Books</a>
     </div>
+  {% else %}
+    <div class="text-center py-20">
+      <p class="text-slate-500 text-lg">No digital books are available yet.</p>
+    </div>
+  {% endif %}
+
+  <div class="text-center mt-12">
+    <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 hover:shadow-md text-slate-700 font-medium transition transform hover:-translate-y-0.5">
+      ← Back to Books
+    </a>
   </div>
 </div>
 {% endblock %}
