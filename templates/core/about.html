@@ -2,28 +2,332 @@
 {% block title %}About Us - LearnCycle{% endblock %}
 
 {% block content %}
-<section class="bg-gradient-to-b from-emerald-50 to-white py-16">
-  <div class="max-w-6xl mx-auto px-6 md:px-12 lg:px-20 text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold text-emerald-700 mb-6">About <span class="text-emerald-500">LearnCycle</span></h1>
-    <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto mb-10">
-      LearnCycle is a community-driven platform that connects readers, learners, and donors through the power of books.
-      Our mission is to make education accessible for everyone by promoting book sharing, sustainability, and lifelong learning.
-    </p>
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.5); }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fadeInLeft {
+  animation: fadeInLeft 0.8s ease-out forwards;
+}
+
+.animate-fadeInRight {
+  animation: fadeInRight 0.8s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card-3d:hover {
+  transform: translateY(-12px) rotateX(5deg);
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.glow-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #10b981, #14b8a6, #10b981);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.glow-border:hover::before {
+  opacity: 1;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 relative overflow-hidden">
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl animate-float" style="animation-delay: 0s;"></div>
+    <div class="absolute top-60 right-20 w-80 h-80 bg-teal-200/30 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 left-1/3 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
   </div>
 
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 px-6 md:px-12 lg:px-20">
-    <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-emerald-500">
-      <h3 class="text-xl font-semibold text-emerald-700 mb-3">Our Vision</h3>
-      <p class="text-gray-600 text-sm">To create a world where knowledge flows freely—empowering students, educators, and readers through book reuse and digital innovation.</p>
+  <!-- Hero Section -->
+  <section class="relative z-10 py-20">
+    <div class="max-w-6xl mx-auto px-6 md:px-12 lg:px-20">
+      <!-- Hero Content -->
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-3 bg-emerald-100 px-6 py-3 rounded-full mb-6 animate-scaleIn shadow-lg">
+          <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+          </svg>
+          <span class="text-emerald-700 font-semibold">Empowering Learners Worldwide</span>
+        </div>
+        
+        <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 mb-6 animate-fadeInUp leading-tight">
+          About <span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">LearnCycle</span>
+        </h1>
+        
+        <p class="text-xl text-slate-700 leading-relaxed max-w-3xl mx-auto mb-8 animate-fadeInUp" style="animation-delay: 0.2s;">
+          LearnCycle is a community-driven platform that connects readers, learners, and donors through the power of books.
+          Our mission is to make education accessible for everyone by promoting book sharing, sustainability, and lifelong learning.
+        </p>
+
+        <!-- Stats Section -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mt-12 animate-fadeInUp" style="animation-delay: 0.3s;">
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div class="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">50K+</div>
+            <div class="text-sm text-slate-600 font-semibold">Active Users</div>
+          </div>
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">100K+</div>
+            <div class="text-sm text-slate-600 font-semibold">Books Shared</div>
+          </div>
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">200+</div>
+            <div class="text-sm text-slate-600 font-semibold">Communities</div>
+          </div>
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <div class="text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-2">98%</div>
+            <div class="text-sm text-slate-600 font-semibold">Satisfaction</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mission Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
+        <!-- Vision Card -->
+        <div class="card-3d glow-border animate-fadeInLeft" style="animation-delay: 0.4s;">
+          <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border-2 border-slate-200 relative overflow-hidden h-full">
+            <!-- Accent Line -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 shimmer-effect"></div>
+            
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl hover:scale-110 transition-transform duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Our Vision</h3>
+            <p class="text-slate-600 leading-relaxed">
+              To create a world where knowledge flows freely—empowering students, educators, and readers through book reuse and digital innovation.
+            </p>
+            
+            <!-- Decorative Element -->
+            <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-emerald-100 rounded-full blur-2xl opacity-50"></div>
+          </div>
+        </div>
+
+        <!-- Mission Card -->
+        <div class="card-3d glow-border animate-fadeInUp" style="animation-delay: 0.5s;">
+          <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border-2 border-slate-200 relative overflow-hidden h-full">
+            <!-- Accent Line -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 shimmer-effect"></div>
+            
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl hover:scale-110 transition-transform duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Our Mission</h3>
+            <p class="text-slate-600 leading-relaxed">
+              Encourage community book exchange, reduce educational waste, and make learning materials accessible to underprivileged learners.
+            </p>
+            
+            <!-- Decorative Element -->
+            <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-blue-100 rounded-full blur-2xl opacity-50"></div>
+          </div>
+        </div>
+
+        <!-- Join Card -->
+        <div class="card-3d glow-border animate-fadeInRight" style="animation-delay: 0.6s;">
+          <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border-2 border-slate-200 relative overflow-hidden h-full">
+            <!-- Accent Line -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 shimmer-effect"></div>
+            
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 shadow-xl hover:scale-110 transition-transform duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Join the Movement</h3>
+            <p class="text-slate-600 leading-relaxed">
+              Whether donating, selling, or buying books, every contribution helps build a sustainable cycle of learning for all.
+            </p>
+            
+            <!-- Decorative Element -->
+            <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-purple-100 rounded-full blur-2xl opacity-50"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Values Section -->
+      <div class="mt-24 animate-fadeInUp" style="animation-delay: 0.7s;">
+        <h2 class="text-4xl font-bold text-center text-slate-900 mb-12">Our Core Values</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 mb-2">Accessibility</h4>
+                <p class="text-slate-700 text-sm">Making education and knowledge available to everyone, regardless of their background or financial situation.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 mb-2">Sustainability</h4>
+                <p class="text-slate-700 text-sm">Promoting environmental responsibility through book reuse, recycling, and reducing educational waste.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 mb-2">Community</h4>
+                <p class="text-slate-700 text-sm">Building strong connections between learners, educators, and book enthusiasts worldwide.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-orange-50 to-red-50 border-2 border-orange-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <div class="flex items-start gap-4">
+              <div class="flex-shrink-0 w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+              </div>
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 mb-2">Innovation</h4>
+                <p class="text-slate-700 text-sm">Leveraging technology to create seamless experiences for book sharing and learning.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="mt-24 text-center animate-fadeInUp" style="animation-delay: 0.8s;">
+        <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 rounded-3xl p-12 shadow-2xl relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent shimmer-effect"></div>
+          <div class="relative z-10">
+            <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Make a Difference?</h3>
+            <p class="text-emerald-100 text-lg mb-8 max-w-2xl mx-auto">
+              Join thousands of learners and contributors making education accessible for everyone
+            </p>
+            <a href="{% url 'register' %}" 
+              class="inline-flex items-center gap-3 bg-white text-emerald-600 px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1">
+              <span>Get Started Today</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-emerald-500">
-      <h3 class="text-xl font-semibold text-emerald-700 mb-3">Our Mission</h3>
-      <p class="text-gray-600 text-sm">Encourage community book exchange, reduce educational waste, and make learning materials accessible to underprivileged learners.</p>
-    </div>
-    <div class="bg-white shadow-lg rounded-2xl p-6 border-t-4 border-emerald-500">
-      <h3 class="text-xl font-semibold text-emerald-700 mb-3">Join the Movement</h3>
-      <p class="text-gray-600 text-sm">Whether donating, selling, or buying books, every contribution helps build a sustainable cycle of learning for all.</p>
-    </div>
-  </div>
-</section>
+  </section>
+</div>
 {% endblock %}

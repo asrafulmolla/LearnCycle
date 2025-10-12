@@ -4,116 +4,422 @@
 {% block title %}Request a Book - LearnCycle{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-b from-white to-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto">
-    <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-start">
-      
-      <div class="px-4 sm:px-0 mb-12 lg:mb-0">
-        <h1 class="text-3xl font-extrabold text-slate-800 sm:text-4xl">
-          Your Book Request Journey
-        </h1>
-        <p class="mt-4 text-lg text-slate-600">
-          Curious about what happens after you request a book? Here’s a simple breakdown of our process to get the books you need into your hands.
-        </p>
-        
-        <div class="mt-8">
-          <img class="w-full rounded-2xl shadow-xl border border-slate-200" src="{% static 'images/LearnCycle Request Book Process.png' %}" alt="LearnCycle Book Request Process">
-        </div>
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
 
-        <div class="mt-10 space-y-8">
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">1</div>
-            <div>
-              <h3 class="text-lg font-semibold text-slate-800">Browse & Request</h3>
-              <p class="mt-1 text-slate-500">You fill out the form with details about the book you're looking for. The more specific you are, the better!</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">2</div>
-            <div>
-              <h3 class="text-lg font-semibold text-slate-800">We Review & Source</h3>
-              <p class="mt-1 text-slate-500">Our team receives your request and checks its availability from our network of suppliers and donors.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">3</div>
-            <div>
-              <h3 class="text-lg font-semibold text-slate-800">Prepare for Delivery</h3>
-              <p class="mt-1 text-slate-500">Once sourced, we process the book and get it ready for pickup or delivery to your location.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-emerald-100 text-emerald-700 font-bold rounded-full">4</div>
-            <div>
-              <h3 class="text-lg font-semibold text-slate-800">Receive & Enjoy</h3>
-              <p class="mt-1 text-slate-500">You get notified that your book is ready. Now it's time to dive in and enjoy your new read!</p>
-            </div>
-          </div>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(20, 184, 166, 0.1); }
+  50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.5), 0 0 60px rgba(20, 184, 166, 0.2); }
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes flip-card {
+  0% { transform: rotateY(90deg); opacity: 0; }
+  100% { transform: rotateY(0deg); opacity: 1; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes text-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0) translateY(20px); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+.animate-slide-left {
+  animation: slide-left 0.8s ease-out forwards;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.glow-effect {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 1.25rem;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+  position: relative;
+}
+
+.step-number::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.3), transparent 70%);
+  border-radius: 50%;
+  animation: pulse-scale 2s ease-in-out infinite;
+}
+
+.step-item {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.step-item:hover {
+  transform: translateX(8px);
+}
+
+.step-item:hover .step-number {
+  transform: scale(1.15) rotate(360deg);
+  animation: pulse-scale 1s ease-in-out;
+}
+
+.input-focus {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.input-focus:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+}
+
+.input-focus::placeholder {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.form-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+.btn-submit {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: gradient-shift 3s infinite;
+}
+
+.text-animate-gradient {
+  background: linear-gradient(90deg, #10b981, #14b8a6, #0891b2, #10b981);
+  background-size: 300% 100%;
+  animation: text-gradient 8s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-hover {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-12px) scale(1.02);
+}
+
+.header-badge {
+  animation: bounce-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.form-group {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 relative overflow-hidden py-12 px-4 sm:px-6 lg:px-8">
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-64 h-64 bg-emerald-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 0s;"></div>
+    <div class="absolute top-40 right-20 w-96 h-96 bg-teal-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 left-1/3 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+  </div>
+
+  <div class="relative z-10">
+    <div class="max-w-7xl mx-auto">
+      <!-- Page Header -->
+      <div class="text-center mb-16 animate-fadeInUp">
+        <div class="header-badge inline-flex items-center gap-3 bg-white/80 backdrop-blur-md border border-emerald-200 rounded-full px-6 py-3 mb-6">
+          <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+          <span class="text-sm font-semibold text-emerald-700">Request a Book</span>
         </div>
+        <h1 class="text-5xl md:text-6xl font-black text-animate-gradient mb-4">
+          Find Your Next Great Read
+        </h1>
+        <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+          Can't find the book you're looking for? Request it now and we'll help you discover it from our network of suppliers and donors.
+        </p>
       </div>
 
-      <div class="w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-4">
-             <svg class="w-10 h-10 text-emerald-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-              <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-            </svg>
-            <div>
-              <h2 class="text-2xl font-extrabold text-slate-800">Request a Book</h2>
-              <p class="text-sm text-slate-500">Can’t find the book you need? Let us know!</p>
+      <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-start">
+        
+        <!-- Left Side - Process Steps -->
+        <div class="mb-12 lg:mb-0 animate-slide-left" style="animation-delay: 0.1s;">
+          <div class="sticky top-8">
+            <div class="bg-white/90 backdrop-blur-xl border-2 border-slate-200 rounded-3xl shadow-2xl p-8 md:p-10 overflow-hidden relative card-hover glow-effect">
+              <!-- Shimmer Accent -->
+              <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 shimmer-effect"></div>
+              
+              <!-- Decorative Background -->
+              <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-emerald-100/20 to-teal-100/20 rounded-full blur-3xl"></div>
+              
+              <div class="relative z-10">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-700 bg-clip-text text-transparent mb-10">
+                  Your Journey
+                </h2>
+
+                <div class="space-y-8">
+                  <!-- Step 1 -->
+                  <div class="flex gap-4 group cursor-pointer step-item">
+                    <div class="flex-shrink-0">
+                      <div class="step-number">1</div>
+                    </div>
+                    <div class="flex-1 pt-1">
+                      <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">Browse & Request</h3>
+                      <p class="mt-2 text-slate-600 text-sm leading-relaxed">Fill out the form with details about the book you're looking for. The more specific you are, the better we can help!</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 2 -->
+                  <div class="flex gap-4 group cursor-pointer step-item">
+                    <div class="flex-shrink-0">
+                      <div class="step-number">2</div>
+                    </div>
+                    <div class="flex-1 pt-1">
+                      <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">We Review & Source</h3>
+                      <p class="mt-2 text-slate-600 text-sm leading-relaxed">Our team receives your request and checks availability from our network of suppliers and donors.</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 3 -->
+                  <div class="flex gap-4 group cursor-pointer step-item">
+                    <div class="flex-shrink-0">
+                      <div class="step-number">3</div>
+                    </div>
+                    <div class="flex-1 pt-1">
+                      <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">Prepare for Delivery</h3>
+                      <p class="mt-2 text-slate-600 text-sm leading-relaxed">Once sourced, we process the book and get it ready for pickup or delivery to your location.</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 4 -->
+                  <div class="flex gap-4 group cursor-pointer step-item">
+                    <div class="flex-shrink-0">
+                      <div class="step-number">4</div>
+                    </div>
+                    <div class="flex-1 pt-1">
+                      <h3 class="text-lg font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">Receive & Enjoy</h3>
+                      <p class="mt-2 text-slate-600 text-sm leading-relaxed">You get notified that your book is ready. Now it's time to dive in and enjoy your new read!</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Process Image -->
+                <div class="mt-10 pt-10 border-t-2 border-slate-100">
+                  <img class="w-full rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl transition-shadow duration-300 hover:scale-105" src="{% static 'images/LearnCycle Request Book Process.png' %}" alt="LearnCycle Book Request Process">
+                </div>
+              </div>
             </div>
           </div>
-          <div class="text-sm text-slate-400 hidden sm:block">LearnCycle</div>
         </div>
 
-        <form method="post" id="requestForm" class="space-y-6">
-          {% csrf_token %}
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label for="id_title" class="block text-sm font-medium text-slate-700">Title <span class="text-rose-500">*</span></label>
-              {{ form.title }}
-              <p class="mt-1 text-xs text-slate-400">Exact title helps us find the right edition.</p>
-            </div>
+        <!-- Right Side - Form -->
+        <div class="animate-slideInRight" style="animation-delay: 0.2s;">
+          <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-3xl shadow-2xl p-8 md:p-10 overflow-hidden relative form-card glow-effect">
+            <!-- Top Accent Bar -->
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 shimmer-effect"></div>
             
-            <div>
-              <label for="id_author" class="block text-sm font-medium text-slate-700">Author</label>
-              {{ form.author }}
-              <p class="mt-1 text-xs text-slate-400">Optional but recommended.</p>
-            </div>
-          </div>
-          
-          <div>
-            <label for="id_edition" class="block text-sm font-medium text-slate-700">Edition / ISBN</label>
-            {{ form.edition }}
-            <p class="mt-1 text-xs text-slate-400">If you know the specific edition or ISBN, add it here.</p>
-          </div>
-          
-          <div>
-            <label for="id_notes" class="block text-sm font-medium text-slate-700">Additional Notes (optional)</label>
-            {{ form.notes }}
-            <p class="mt-1 text-xs text-slate-400">Any other details? e.g., language, publisher, or why you need it.</p>
-          </div>
-          
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-            <div class="flex items-center gap-3">
-              <button id="submitBtn" type="submit" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 text-white font-semibold py-2.5 px-5 rounded-lg shadow-md transition transform active:scale-95">
-                <svg id="btnSpinner" class="w-5 h-5 animate-spin hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span id="btnText">Submit Request</span>
-              </button>
-              
-              <a href="{% url 'request_history' %}" class="inline-flex items-center px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 hover:shadow-sm">My Requests</a>
-            </div>
-            
-            <a href="{% url 'book_list' %}" class="text-sm text-slate-500 hover:text-slate-700 transition">← Back to Library</a>
-          </div>
-        </form>
+            <!-- Decorative Background -->
+            <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-emerald-100/10 to-teal-100/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
 
-        {% comment %} <div class="mt-6 text-center text-xs text-slate-400">By submitting a request you agree to our <a href="#" class="underline hover:text-slate-600">request policy</a>.</div> {% endcomment %}
+            <div class="relative z-10">
+              <!-- Form Header -->
+              <div class="flex items-center gap-4 mb-8 animate-bounce-in">
+                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg class="w-7 h-7 text-white animate-float" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="text-2xl font-bold text-slate-800">Request a Book</h2>
+                  <p class="text-sm text-slate-600">Help us find your next favorite book</p>
+                </div>
+              </div>
+
+              <!-- Form -->
+              <form method="post" id="requestForm" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Title and Author Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 form-group">
+                  <div>
+                    <label for="id_title" class="block text-sm font-semibold text-slate-700 mb-2">
+                      Book Title <span class="text-rose-500">*</span>
+                    </label>
+                    {{ form.title }}
+                    <p class="mt-2 text-xs text-slate-500">Exact title helps us find the right edition.</p>
+                  </div>
+                  
+                  <div>
+                    <label for="id_author" class="block text-sm font-semibold text-slate-700 mb-2">
+                      Author
+                    </label>
+                    {{ form.author }}
+                    <p class="mt-2 text-xs text-slate-500">Optional but recommended.</p>
+                  </div>
+                </div>
+
+                <!-- Edition / ISBN -->
+                <div class="form-group">
+                  <label for="id_edition" class="block text-sm font-semibold text-slate-700 mb-2">
+                    Edition / ISBN
+                  </label>
+                  {{ form.edition }}
+                  <p class="mt-2 text-xs text-slate-500">If you know the specific edition or ISBN, add it here.</p>
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="form-group">
+                  <label for="id_notes" class="block text-sm font-semibold text-slate-700 mb-2">
+                    Additional Notes
+                  </label>
+                  {{ form.notes }}
+                  <p class="mt-2 text-xs text-slate-500">Any other details? e.g., language, publisher, or why you need it.</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t-2 border-slate-100 form-group">
+                  <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <button id="submitBtn" type="submit" class="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 active:translate-y-0 active:scale-100 overflow-hidden btn-submit glow-effect">
+                      <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></span>
+                      <svg id="btnSpinner" class="w-5 h-5 animate-spin hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span id="btnText">Submit Request</span>
+                    </button>
+                    
+                    <a href="{% url 'request_history' %}" class="group inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                      <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                      My Requests
+                    </a>
+                  </div>
+
+                  <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 text-slate-600 hover:text-emerald-600 font-semibold transition-all duration-300 group hover:-translate-x-1">
+                    <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Library
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -127,10 +433,25 @@ document.addEventListener('DOMContentLoaded', function () {
   const btnText = document.getElementById('btnText');
 
   // Add Tailwind-friendly classes to Django form widgets
-  Array.from(form.elements).forEach(el => {
+  Array.from(form.elements).forEach((el, index) => {
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
         if (el.type !== 'checkbox' && el.type !== 'radio') {
-            el.classList.add('mt-1', 'block', 'w-full', 'rounded-lg', 'border', 'border-slate-300', 'bg-white', 'shadow-sm', 'py-2', 'px-3', 'focus:ring-2', 'focus:ring-emerald-400', 'focus:border-emerald-500', 'transition');
+            el.classList.add('mt-1', 'block', 'w-full', 'rounded-xl', 'border-2', 'border-slate-200', 'bg-slate-50', 'hover:bg-white', 'shadow-sm', 'py-3', 'px-4', 'focus:ring-4', 'focus:ring-emerald-100', 'focus:border-emerald-500', 'transition', 'input-focus', 'font-medium', 'text-slate-800');
+            
+            // Add animation delay to each input
+            el.style.animation = `fadeInUp 0.6s ease-out forwards ${0.5 + index * 0.1}s`;
+            el.style.opacity = '0';
+            
+            // Add ripple effect on focus
+            el.addEventListener('focus', function(e) {
+              const ripple = document.createElement('span');
+              ripple.style.position = 'absolute';
+              ripple.style.borderRadius = '50%';
+              ripple.style.background = 'rgba(16, 185, 129, 0.6)';
+              ripple.style.width = '20px';
+              ripple.style.height = '20px';
+              ripple.style.animation = 'pulse-scale 0.6s ease-out';
+            });
         }
     }
   });
@@ -141,12 +462,19 @@ document.addEventListener('DOMContentLoaded', function () {
     if (titleInput && titleInput.value.trim() === '') {
       e.preventDefault();
       titleInput.focus();
-      titleInput.classList.remove('border-slate-300');
-      titleInput.classList.add('border-rose-500', 'ring-rose-200');
+      titleInput.classList.remove('border-slate-200');
+      titleInput.classList.add('border-rose-500', 'ring-4', 'ring-rose-100', 'animate-bounce');
+      
+      // Add shake animation
+      titleInput.style.animation = 'shake 0.5s ease-in-out';
+      setTimeout(() => {
+        titleInput.style.animation = '';
+      }, 500);
+      
       // Remove error state on input
       titleInput.addEventListener('input', () => {
-        titleInput.classList.remove('border-rose-500', 'ring-rose-200');
-        titleInput.classList.add('border-slate-300');
+        titleInput.classList.remove('border-rose-500', 'ring-rose-100', 'animate-bounce');
+        titleInput.classList.add('border-slate-200');
       }, { once: true });
       return;
     }
@@ -156,6 +484,28 @@ document.addEventListener('DOMContentLoaded', function () {
     btnText.textContent = 'Submitting...';
     submitBtn.setAttribute('disabled', 'true');
     submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+    
+    // Add success animation after a moment
+    setTimeout(() => {
+      submitBtn.style.animation = 'pulse-scale 0.3s ease-out';
+    }, 100);
+  });
+
+  // Add CSS animation for shake
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Smooth scroll animation for form
+  const formGroups = form.querySelectorAll('.form-group');
+  formGroups.forEach((group, index) => {
+    group.style.animationDelay = `${0.5 + index * 0.1}s`;
   });
 });
 </script>

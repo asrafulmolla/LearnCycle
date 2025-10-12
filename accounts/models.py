@@ -1,14 +1,22 @@
 # accounts/models.py
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
+
+phone_validator = RegexValidator(
+    regex=r'^\+?\d{10,15}$',
+    message="Phone number must be entered in the format: '+8801XXXXXXXXX' (10–15 digits)."
+)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = PhoneNumberField(region='BD', blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True) 
     book_points = models.IntegerField(default=0)
-    phone = models.CharField(max_length=15, blank=True)
-    address = models.TextField(blank=True)
+    image = models.ImageField(upload_to='profile_pics/', default='default_user.png', blank=True)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
@@ -18,9 +26,4 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     else:
-        # Only save profile if it exists
-        if hasattr(instance, 'profile'):
-            instance.profile.save()
-        else:
-            # Create profile if missing (e.g., for superuser)
-            Profile.objects.create(user=instance)
+        instance.profile.save()

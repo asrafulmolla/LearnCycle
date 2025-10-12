@@ -3,28 +3,45 @@
 
 {% block content %}
 <div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
-  <div class="max-w-3xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
-    <h2 class="text-2xl font-extrabold text-slate-800 mb-4">Order #{{ order.id }}</h2>
+  <div class="max-w-4xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
 
-    <div class="space-y-2 mb-6">
-      <p><strong>Status:</strong> <span class="text-emerald-600 font-semibold">{{ order.get_status_display }}</span></p>
-      <p><strong>Total:</strong> ${{ order.total_price }}</p>
-      <p><strong>Placed:</strong> {{ order.created_at|date:"M d, Y" }}</p>
+    <!-- Header -->
+    <div class="mb-6">
+      <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Order #{{ order.id }}</h2>
+      <p class="text-slate-500">Placed on {{ order.created_at|date:"M d, Y" }}</p>
     </div>
 
-    <h3 class="text-xl font-bold mb-2">Items:</h3>
-    <ul class="space-y-2 mb-6">
-    {% for item in order.items.all %}
-        <li class="flex justify-between bg-slate-50 border border-slate-200 rounded-lg p-3 shadow-sm">
-          <span>{{ item.quantity }} × {{ item.book.title }}</span>
-          <span class="font-semibold">${{ item.price }}</span>
+    <!-- Status & Total -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 shadow-sm">
+      <div class="mb-2 sm:mb-0">
+        <p><strong>Status:</strong> <span class="text-emerald-600 font-semibold">{{ order.get_status_display }}</span></p>
+        <p><strong>Total:</strong> <span class="font-bold text-emerald-700 text-lg">${{ order.total_price|floatformat:2 }}</span></p>
+      </div>
+      <div>
+        <a href="{% url 'order_history' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">
+          ← Back to Orders
+        </a>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <h3 class="text-2xl font-bold text-slate-800 mb-4">Items in this order</h3>
+    <ul class="space-y-4">
+      {% for item in order.items.all %}
+        <li class="flex flex-col sm:flex-row items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm hover:bg-slate-100 transition">
+          <!-- Book Info -->
+          <div class="flex items-center gap-4">
+            <img src="{{ item.book.image.url }}" alt="{{ item.book.title }}" class="w-16 h-20 object-cover rounded-lg shadow-sm">
+            <div>
+              <p class="font-semibold text-slate-800">{{ item.book.title }}</p>
+              <p class="text-slate-500 text-sm">Quantity: {{ item.quantity }}</p>
+            </div>
+          </div>
+          <span class="font-bold text-emerald-600 text-lg mt-2 sm:mt-0">${{ item.price|floatformat:2 }}</span>
         </li>
-    {% endfor %}
+      {% endfor %}
     </ul>
 
-    <div>
-      <a href="{% url 'order_history' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Back to Orders</a>
-    </div>
   </div>
 </div>
 {% endblock %}
