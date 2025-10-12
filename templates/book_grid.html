@@ -165,7 +165,7 @@
                                 {% comment %} <span class="cart-badge absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                                     {{ user.cart.cartitem_set.count|default:0 }}
                                 </span> {% endcomment %}
-                            </div>
+                            {% comment %} </div>
                             <a href="{% url 'cart_detail' %}">Cart ({{ cart_item_count }})</a>
                         </a>
                     {% else %}
@@ -310,4 +310,4 @@
                     </div>
                     <div class="text-center md:text-right">
                         <p class="text-sm text-gray-500">
-                            &copy; 2025 <span class="text-white font-semibold">LearnCycle {% endcomment %}
+                            &copy; 2025 <span class="text-white font-semibold">LearnCycle {% endcomment %} {% endcomment %}

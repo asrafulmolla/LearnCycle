@@ -18,3 +18,4 @@ media/
 *.sqlite3
 *.db
 test.txt
+book_grid/
