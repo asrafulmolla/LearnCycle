@@ -2,22 +2,332 @@
 {% block title %}Privacy Policy - LearnCycle{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-4">Privacy Policy</h1>
-  <p class="mb-4">Last updated: October 2025</p>
+<style>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  <p>At <strong>LearnCycle</strong>, we value your privacy. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website.</p>
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
-  <h2 class="text-2xl font-semibold mt-6 mb-2">1. Information We Collect</h2>
-  <p>We may collect personal data such as your name, email address, account information, and activity within the site.</p>
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
 
-  <h2 class="text-2xl font-semibold mt-6 mb-2">2. How We Use Your Information</h2>
-  <p>Your information helps us manage accounts, process donations, and improve the LearnCycle experience.</p>
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
 
-  <h2 class="text-2xl font-semibold mt-6 mb-2">3. Data Security</h2>
-  <p>We use secure methods to protect your data but cannot guarantee absolute security over the internet.</p>
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.5); }
+}
 
-  <h2 class="text-2xl font-semibold mt-6 mb-2">4. Contact Us</h2>
-  <p>If you have questions, contact us at <a href="mailto:support@learncycle.com" class="text-blue-600">support@learncycle.com</a>.</p>
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.glow-effect {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.section-title {
+  background: linear-gradient(90deg, #1f2937, #10b981, #14b8a6, #1f2937);
+  background-size: 300% 100%;
+  animation: gradient-shift 8s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-link {
+  position: relative;
+  transition: all 0.3s ease;
+  color: #059669;
+  font-weight: 600;
+}
+
+.page-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #14b8a6);
+  transition: width 0.3s ease;
+}
+
+.page-link:hover::after {
+  width: 100%;
+}
+
+.section-box {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  border-left: 4px solid transparent;
+}
+
+.section-box:hover {
+  transform: translateX(8px);
+  border-left-color: #10b981;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+}
+
+.icon-box {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.icon-box:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Staggered animations */
+.section:nth-child(1) { animation-delay: 0.1s; }
+.section:nth-child(2) { animation-delay: 0.2s; }
+.section:nth-child(3) { animation-delay: 0.3s; }
+.section:nth-child(4) { animation-delay: 0.4s; }
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 relative overflow-hidden py-12 px-4 md:px-6">
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-64 h-64 bg-emerald-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 0s;"></div>
+    <div class="absolute top-40 right-20 w-96 h-96 bg-teal-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 left-1/3 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+  </div>
+
+  <div class="relative z-10 max-w-4xl mx-auto">
+    
+    <!-- Header Section -->
+    <div class="mb-12 animate-fadeInUp">
+      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-md border border-emerald-200 rounded-full px-6 py-3 mb-6">
+        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+        <span class="text-sm font-semibold text-emerald-700">Data Protection</span>
+      </div>
+
+      <h1 class="text-5xl md:text-6xl font-black section-title mb-4">Privacy Policy</h1>
+      <p class="text-slate-600 text-lg">Last updated: <span class="font-bold text-emerald-700">October 2025</span></p>
+    </div>
+
+    <!-- Introduction -->
+    <div class="mb-8 animate-fadeInUp" style="animation-delay: 0.15s;">
+      <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 shimmer-effect"></div>
+        <p class="text-slate-700 text-lg leading-relaxed">
+          At <span class="font-black text-emerald-600">LearnCycle</span>, we value your privacy and are committed to transparency. This Privacy Policy explains how we collect, use, store, and protect your personal information when you use our website and services.
+        </p>
+      </div>
+    </div>
+
+    <!-- Content Sections -->
+    <div class="space-y-6">
+      
+      <!-- Section 1 -->
+      <div class="section animate-fadeInUp">
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg overflow-hidden section-box hover:glow-effect transition-all">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-teal-500 to-blue-500 shimmer-effect"></div>
+          
+          <div class="p-8">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 icon-box">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Information We Collect</h2>
+            </div>
+            <div class="pl-18 -mt-6">
+              <p class="text-slate-600 text-lg leading-relaxed mb-3">We collect personal data including:</p>
+              <ul class="text-slate-600 space-y-2 pl-4">
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">•</span>
+                  <span><strong>Account Information:</strong> Name, email, password, and profile details</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">•</span>
+                  <span><strong>Transaction Data:</strong> Purchase history, payment information, and donations</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">•</span>
+                  <span><strong>Activity Data:</strong> Browsing history, search queries, and interactions</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">•</span>
+                  <span><strong>Device Information:</strong> IP address, browser type, and device details</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="section animate-fadeInUp" style="animation-delay: 0.2s;">
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg overflow-hidden section-box hover:glow-effect transition-all">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-teal-500 to-indigo-500 shimmer-effect"></div>
+          
+          <div class="p-8">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 icon-box">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-800">How We Use Your Information</h2>
+            </div>
+            <div class="pl-18 -mt-6">
+              <p class="text-slate-600 text-lg leading-relaxed">Your information helps us:</p>
+              <ul class="text-slate-600 space-y-2 pl-4 mt-3">
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span>Manage and improve your account experience</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span>Process donations, purchases, and transactions securely</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span>Send important notifications and updates</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span>Enhance and personalize the LearnCycle experience</span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span>Prevent fraud and maintain platform security</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="section animate-fadeInUp" style="animation-delay: 0.3s;">
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg overflow-hidden section-box hover:glow-effect transition-all">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-teal-500 to-purple-500 shimmer-effect"></div>
+          
+          <div class="p-8">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 icon-box">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Data Security</h2>
+            </div>
+            <div class="pl-18 -mt-6">
+              <p class="text-slate-600 text-lg leading-relaxed">We implement industry-standard security measures to protect your data:</p>
+              <div class="mt-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg">
+                <p class="text-slate-700 font-medium">🔒 Encrypted connections (SSL/TLS)</p>
+                <p class="text-slate-700 font-medium mt-2">🔐 Secure password storage with hashing</p>
+                <p class="text-slate-700 font-medium mt-2">🛡️ Regular security audits and updates</p>
+                <p class="text-slate-600 text-sm mt-4 italic">However, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="section animate-fadeInUp" style="animation-delay: 0.4s;">
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg overflow-hidden section-box hover:glow-effect transition-all">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 shimmer-effect"></div>
+          
+          <div class="p-8">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0 icon-box">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Contact & Rights</h2>
+            </div>
+            <div class="pl-18 -mt-6">
+              <p class="text-slate-600 text-lg leading-relaxed mb-4">Have privacy concerns or questions? We're here to help:</p>
+              <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <p class="text-slate-700 font-semibold mb-2">📧 Email: <a href="mailto:support@learncycle.com" class="page-link">support@learncycle.com</a></p>
+                <p class="text-slate-700 font-semibold">🌐 Visit: <a href="{% url 'contact_us' %}" class="page-link">Contact Us Page</a></p>
+              </div>
+              <p class="text-slate-600 text-sm mt-4">You have the right to access, update, or delete your personal information. Contact us to exercise these rights.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer CTA -->
+    <div class="mt-12 animate-fadeInUp" style="animation-delay: 0.5s;">
+      <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-2xl shadow-lg p-8 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-30" style="background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.1), transparent); background-size: 200% 100%; animation: shimmer 3s infinite;"></div>
+        
+        <div class="relative z-10">
+          <p class="text-slate-700 text-lg mb-6">By using LearnCycle, you consent to our Privacy Policy. We're committed to protecting your data and your rights.</p>
+          
+          <div class="flex flex-col md:flex-row gap-4 justify-center">
+            <a href="{% url 'terms_of_service' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 rounded-xl font-bold transition-all transform hover:scale-105 shadow-lg">
+              Terms of Service
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-bold transition-all transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-xl glow-effect">
+              Back to Shop
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
 {% endblock %}

@@ -2,98 +2,339 @@
 {% block title %}Contact Us - LearnCycle{% endblock %}
 
 {% block content %}
-<section class="relative bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-16">
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+<style>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.5); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0) translateY(20px); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.shimmer-effect {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.glow-effect {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.title-gradient {
+  background: linear-gradient(90deg, #059669, #10b981, #14b8a6, #059669);
+  background-size: 300% 100%;
+  animation: gradient-shift 8s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.contact-card {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.contact-card:hover {
+  transform: translateX(8px) translateY(-4px);
+  box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
+}
+
+.icon-box {
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.contact-card:hover .icon-box {
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+}
+
+.form-input {
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+}
+
+.social-link {
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-link:hover {
+  transform: translateY(-4px) scale(1.2);
+}
+
+.submit-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.submit-btn:hover::before {
+  left: 100%;
+}
+</style>
+
+<section class="relative bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 py-16 md:py-24 overflow-hidden">
+  <!-- Animated Background Elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 left-10 w-72 h-72 bg-emerald-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 0s;"></div>
+    <div class="absolute top-40 right-20 w-96 h-96 bg-teal-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 left-1/3 w-80 h-80 bg-blue-200/20 rounded-full blur-3xl animate-float" style="animation-delay: 4s;"></div>
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4 md:px-6">
     
-    <!-- 🏢 Contact Info Section -->
-    <div class="space-y-6">
-      <h1 class="text-4xl font-bold text-emerald-700 mb-4">Get in Touch</h1>
-      <p class="text-gray-600 leading-relaxed">
-        Have a question, partnership proposal, or feedback about <strong>LearnCycle</strong>?  
-        We’re here to help! Our team usually responds within 24 hours on business days.
-      </p>
+    <!-- Page Header -->
+    <div class="text-center mb-16 animate-fadeInUp">
+      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-md border border-emerald-200 rounded-full px-6 py-3 mb-6">
+        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+        <span class="text-sm font-semibold text-emerald-700">Get in Touch</span>
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black title-gradient mb-4">Contact Us</h1>
+      <p class="text-slate-600 text-lg max-w-2xl mx-auto">Have a question, partnership proposal, or feedback? We're here to help! Our team usually responds within 24 hours on business days.</p>
+    </div>
 
-      <div class="mt-8 space-y-4">
-        <div class="flex items-center space-x-4">
-          <div class="bg-emerald-100 text-emerald-700 p-3 rounded-xl">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-9 12V4" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-800">Email</h3>
-            <p class="text-gray-600">support@learncycle.com</p>
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+      
+      <!-- Left Side - Contact Info -->
+      <div class="space-y-6 animate-slideInLeft">
+        
+        <!-- Email Card -->
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg p-6 contact-card group">
+          <div class="flex items-start gap-4">
+            <div class="icon-box w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-slate-800 mb-1">Email</h3>
+              <p class="text-slate-600 font-medium">support@learncycle.com</p>
+              <p class="text-sm text-slate-500 mt-2">We typically respond within 24 hours</p>
+            </div>
           </div>
         </div>
 
-        <div class="flex items-center space-x-4">
-          <div class="bg-emerald-100 text-emerald-700 p-3 rounded-xl">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h18M3 10h18M3 15h18M3 20h18" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-800">Office</h3>
-            <p class="text-gray-600">Dhaka, Bangladesh</p>
+        <!-- Office Card -->
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg p-6 contact-card group" style="animation-delay: 0.1s;">
+          <div class="flex items-start gap-4">
+            <div class="icon-box w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-slate-800 mb-1">Office Location</h3>
+              <p class="text-slate-600 font-medium">Dhaka, Bangladesh</p>
+              <p class="text-sm text-slate-500 mt-2">South Asia's Premier Book Exchange</p>
+            </div>
           </div>
         </div>
 
-        <div class="flex items-center space-x-4">
-          <div class="bg-emerald-100 text-emerald-700 p-3 rounded-xl">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H8m0 0l4-4m-4 4l4 4" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="font-semibold text-gray-800">Follow Us</h3>
-            <p class="text-gray-600">Stay connected on social platforms</p>
-            <div class="flex space-x-4 mt-2">
-              <a href="#" class="text-emerald-600 hover:text-emerald-800 transition"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="text-emerald-600 hover:text-emerald-800 transition"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="text-emerald-600 hover:text-emerald-800 transition"><i class="fab fa-linkedin-in"></i></a>
+        <!-- Social Card -->
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-2xl shadow-lg p-6 contact-card group" style="animation-delay: 0.2s;">
+          <div class="flex items-start gap-4">
+            <div class="icon-box w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-slate-800 mb-3">Follow Us</h3>
+              <p class="text-slate-600 font-medium mb-4">Stay connected on social platforms</p>
+              <div class="flex gap-4">
+                <a href="#" class="social-link w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-link w-10 h-10 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white rounded-full shadow-lg hover:shadow-xl">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-full shadow-lg hover:shadow-xl">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- ✉️ Contact Form -->
-    <div class="bg-white rounded-2xl shadow-xl p-8 border border-emerald-100">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Send Us a Message</h2>
+      <!-- Right Side - Contact Form -->
+      <div class="animate-slideInRight">
+        <div class="bg-white/95 backdrop-blur-xl border-2 border-slate-200 rounded-3xl shadow-2xl p-8 relative overflow-hidden">
+          <!-- Top Accent -->
+          <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500 shimmer-effect"></div>
+          
+          <!-- Decorative Background -->
+          <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-emerald-100/10 to-teal-100/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
 
-      {% if messages %}
-        {% for message in messages %}
-          <div class="p-3 mb-4 text-green-700 bg-green-100 rounded-lg">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
+          <div class="relative z-10">
+            <h2 class="text-3xl font-bold text-slate-800 mb-2 text-center">Send Us a Message</h2>
+            <p class="text-slate-600 text-center mb-8">We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
 
-      <form method="post" class="space-y-5">
-        {% csrf_token %}
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Full Name</label>
-          {{ form.name }}
-        </div>
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Email Address</label>
-          {{ form.email }}
-        </div>
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Subject</label>
-          {{ form.subject }}
-        </div>
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Message</label>
-          {{ form.message }}
-        </div>
+            {% if messages %}
+              {% for message in messages %}
+                <div class="p-4 mb-6 text-green-700 bg-green-50 border-l-4 border-green-500 rounded-lg shadow-md animate-fadeInUp">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>{{ message }}</span>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
 
-        <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all">
-          Send Message
-        </button>
-      </form>
+            <form method="post" class="space-y-5">
+              {% csrf_token %}
+              
+              <!-- Name Field -->
+              <div>
+                <label class="block text-slate-700 font-semibold mb-2">Full Name</label>
+                {{ form.name }}
+              </div>
+
+              <!-- Email Field -->
+              <div>
+                <label class="block text-slate-700 font-semibold mb-2">Email Address</label>
+                {{ form.email }}
+              </div>
+
+              <!-- Subject Field -->
+              <div>
+                <label class="block text-slate-700 font-semibold mb-2">Subject</label>
+                {{ form.subject }}
+              </div>
+
+              <!-- Message Field -->
+              <div>
+                <label class="block text-slate-700 font-semibold mb-2">Message</label>
+                {{ form.message }}
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-700 hover:via-teal-700 hover:to-emerald-700 text-white py-4 px-6 rounded-xl font-bold shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all relative overflow-hidden group submit-btn glow-effect">
+                <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></span>
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                  </svg>
+                  Send Message
+                </span>
+              </button>
+            </form>
+
+            <p class="text-sm text-slate-500 text-center mt-6">We respect your privacy. Your information is secure with us.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Decorative background shapes -->
-  <div class="absolute inset-0 -z-10 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')]"></div>
 </section>
+
+<script>
+// Form input styling
+document.addEventListener('DOMContentLoaded', function() {
+  const inputs = document.querySelectorAll('input, textarea, select');
+  inputs.forEach(input => {
+    if (!input.classList.contains('form-input')) {
+      input.classList.add('form-input', 'w-full', 'px-4', 'py-3', 'border-2', 'border-slate-200', 'rounded-xl', 'focus:border-emerald-500', 'focus:outline-none', 'focus:ring-4', 'focus:ring-emerald-100', 'transition-all', 'bg-slate-50', 'hover:bg-white', 'text-slate-800', 'font-medium');
+    }
+  });
+});
+</script>
+
 {% endblock %}

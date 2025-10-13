@@ -325,6 +325,7 @@
                 <div class="flex flex-wrap justify-center gap-8 items-center">
                     <a href="{% url 'book_list' %}" class="nav-link nav-item">Home</a>
                     <a href="{% url 'about' %}" class="nav-link nav-item">About Us</a>
+                    <a href="{% url 'contact_us' %}" class="nav-link nav-item">Contact Us</a>
                     {% if user.is_authenticated %}
                         <a href="{% url 'donate_book' %}" class="nav-link nav-item">Donate Book</a>
                         <a href="{% url 'request_book' %}" class="nav-link nav-item">Request Book</a>
@@ -342,7 +343,9 @@
                         <a href="{% url 'register' %}" class="bg-white border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 px-6 py-2 rounded-lg text-sm font-bold transition-all transform hover:scale-105 nav-item">
                             Register
                         </a>
+
                     {% endif %}
+
                 </div>
             </nav>
         </div>
