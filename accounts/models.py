@@ -17,7 +17,13 @@ class Profile(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True) 
     book_points = models.IntegerField(default=0)
     image = models.ImageField(upload_to='profile_pics/', default='default_user.png', blank=True)
-
+    
+    # New role flags
+    is_seller = models.BooleanField(default=False)
+    is_buyer = models.BooleanField(default=False)
+    is_donor = models.BooleanField(default=False)
+    total_selling_books = models.IntegerField(default=0)
+    
     def __str__(self):
         return f"{self.user.username}'s Profile"
 

@@ -20,18 +20,22 @@
 
             <!-- Status Badge -->
             <div>
-              {% if order.get_status_display == 'Delivered' %}
+              {% if order.status == 'delivered' %}
                 <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold">Delivered</span>
-              {% elif order.get_status_display == 'Cancelled' %}
+              {% elif order.status == 'cancelled' %}
                 <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-semibold">Cancelled</span>
-              {% else %}
+              {% elif order.status == 'shipped' %}
+                <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">Shipped</span>
+              {% elif order.status == 'processing' %}
+                <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-sm font-semibold">Processing</span>
+              {% else %} {# pending #}
                 <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm font-semibold">Pending</span>
               {% endif %}
             </div>
 
             <!-- View Details Button -->
             <div>
-              <a href="{% url 'order_detail' order.id %}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow transition transform hover:scale-105">
+              <a href="{% url 'orders:order_detail' order.id %}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium shadow transition transform hover:scale-105">
                 View Details
               </a>
             </div>
@@ -44,7 +48,7 @@
 
     <!-- Browse Books -->
     <div class="mt-8 text-center">
-      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105 font-medium">Browse Books</a>
+      <a href="{% url 'books:book_list' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105 font-medium">Browse Books</a>
     </div>
   </div>
 </div>

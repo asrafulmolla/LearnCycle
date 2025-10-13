@@ -1,0 +1,46 @@
+<!-- templates/books/sell_for_request.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto p-6">
+  <h2 class="text-2xl font-bold mb-4">List Book for Request</h2>
+  <p class="mb-4"><strong>Requested:</strong> "{{ book_request.title }}" by {{ book_request.author }}</p>
+  
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="title" value="{{ book_request.title }}">
+    <input type="hidden" name="author" value="{{ book_request.author }}">
+    
+    <div class="mb-4">
+      <label>Category</label>
+      <select name="category" class="w-full p-2 border rounded" required>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}">{{ cat.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-4">
+      <label>Price ($)</label>
+      <input type="number" step="0.01" name="price" class="w-full p-2 border rounded" required>
+    </div>
+    <div class="mb-4">
+      <label>Condition</label>
+      <select name="condition" class="w-full p-2 border rounded" required>
+        <option value="new">New</option>
+        <option value="like_new">Like New</option>
+        <option value="good">Good</option>
+        <option value="fair">Fair</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label>Description</label>
+      <textarea name="description" class="w-full p-2 border rounded" rows="4">{{ book_request.description }}</textarea>
+    </div>
+    <div class="mb-4">
+      <label>Image</label>
+      <input type="file" name="image" accept="image/*" class="w-full p-2 border rounded">
+    </div>
+    <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded">List This Book</button>
+    <a href="{% url 'books:seller_dashboard' %}" class="ml-4 text-gray-600">Cancel</a>
+  </form>
+</div>
+{% endblock %}

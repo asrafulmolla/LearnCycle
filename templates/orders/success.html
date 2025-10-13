@@ -18,10 +18,10 @@
 
     <!-- Action Buttons -->
     <div class="flex flex-col sm:flex-row justify-center gap-4 mt-4">
-      <a href="{% url 'order_history' %}" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition transform hover:scale-105">
+      <a href="{% url 'orders:order_history' %}" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition transform hover:scale-105">
         View Order History
       </a>
-      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">
+      <a href="{% url 'books:book_list' %}" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">
         Continue Shopping
       </a>
     </div>

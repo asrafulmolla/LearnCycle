@@ -1,0 +1,60 @@
+<!-- templates/books/edit.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Edit Book</h1>
+    
+    <form method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Title</label>
+            <input type="text" name="title" value="{{ book.title }}" required class="w-full px-4 py-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Author</label>
+            <input type="text" name="author" value="{{ book.author }}" required class="w-full px-4 py-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Category</label>
+            <select name="category" required class="w-full px-4 py-2 border border-gray-300 rounded">
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" {% if category.id == book.category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Price ($)</label>
+            <input type="number" name="price" step="0.01" min="0" value="{{ book.price }}" required class="w-full px-4 py-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Condition</label>
+            <select name="condition" required class="w-full px-4 py-2 border border-gray-300 rounded">
+                <option value="">Select Condition</option>
+                <option value="new" {% if book.condition == 'new' %}selected{% endif %}>New</option>
+                <option value="like_new" {% if book.condition == 'like_new' %}selected{% endif %}>Like New</option>
+                <option value="good" {% if book.condition == 'good' %}selected{% endif %}>Good</option>
+                <option value="fair" {% if book.condition == 'fair' %}selected{% endif %}>Fair</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Description</label>
+            <textarea name="description" required class="w-full px-4 py-2 border border-gray-300 rounded" rows="4">{{ book.description }}</textarea>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Quantity</label>
+            <input type="number" name="quantity" min="1" value="{{ book.quantity }}" class="w-full px-4 py-2 border border-gray-300 rounded">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold mb-2">Image</label>
+            <input type="file" name="image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded">
+            {% if book.image %}
+            <p class="mt-2">Current image:</p>
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-32 h-32 object-cover mt-2">
+            {% endif %}
+        </div>
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Update Book</button>
+    </form>
+</div>
+{% endblock %}

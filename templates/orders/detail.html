@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="min-h-screen flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
-  <div class="max-w-4xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
+  <div class="max-w-5xl w-full bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-lg p-8">
 
     <!-- Header -->
     <div class="mb-6">
@@ -18,29 +18,81 @@
         <p><strong>Total:</strong> <span class="font-bold text-emerald-700 text-lg">${{ order.total_price|floatformat:2 }}</span></p>
       </div>
       <div>
-        <a href="{% url 'order_history' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">
+        <a href="{% url 'orders:order_history' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">
           ← Back to Orders
         </a>
       </div>
     </div>
 
+    <!-- Order Info Section -->
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-8 shadow-sm">
+      <h3 class="text-2xl font-bold text-slate-800 mb-4">Order Information</h3>
+      <div class="grid md:grid-cols-2 gap-4 text-slate-700">
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+        <p><strong>Created At:</strong> {{ order.created_at|date:"M d, Y - h:i A" }}</p>
+        <p><strong>Total Price:</strong> ${{ order.total_price|floatformat:2 }}</p>
+        <p><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+        <p><strong>Phone Number:</strong> {{ order.phone_number }}</p>
+        <p class="md:col-span-2"><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+      </div>
+    </div>
+
     <!-- Items List -->
-    <h3 class="text-2xl font-bold text-slate-800 mb-4">Items in this order</h3>
-    <ul class="space-y-4">
-      {% for item in order.items.all %}
-        <li class="flex flex-col sm:flex-row items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm hover:bg-slate-100 transition">
-          <!-- Book Info -->
-          <div class="flex items-center gap-4">
-            <img src="{{ item.book.image.url }}" alt="{{ item.book.title }}" class="w-16 h-20 object-cover rounded-lg shadow-sm">
-            <div>
-              <p class="font-semibold text-slate-800">{{ item.book.title }}</p>
-              <p class="text-slate-500 text-sm">Quantity: {{ item.quantity }}</p>
+    <div class="mb-10">
+      <h3 class="text-2xl font-bold text-slate-800 mb-4">Items in this Order</h3>
+      <ul class="space-y-4">
+        {% for item in order.items.all %}
+          <li class="flex flex-col sm:flex-row items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm hover:bg-slate-100 transition">
+            <div class="flex items-center gap-4">
+              {% if item.book.image %}
+                <img src="{{ item.book.image.url }}" alt="{{ item.book.title }}" class="w-16 h-20 object-cover rounded-lg shadow-sm">
+              {% else %}
+                <div class="w-16 h-20 bg-gray-200 flex items-center justify-center rounded-lg">
+                  <span class="text-gray-500 text-xs">No Image</span>
+                </div>
+              {% endif %}
+              <div>
+                <p class="font-semibold text-slate-800">{{ item.book.title }}</p>
+                <p class="text-slate-500 text-sm">by {{ item.book.author }}</p>
+                <p class="text-slate-500 text-sm">Quantity: {{ item.quantity }}</p>
+                {% if item.price %}
+                  <p class="text-emerald-600 text-sm">Price: ${{ item.price }}</p>
+                {% else %}
+                  <p class="text-emerald-600 text-sm">Price: Free</p>
+                {% endif %}
+              </div>
             </div>
-          </div>
-          <span class="font-bold text-emerald-600 text-lg mt-2 sm:mt-0">${{ item.price|floatformat:2 }}</span>
-        </li>
-      {% endfor %}
-    </ul>
+            <span class="font-bold text-emerald-600 text-lg mt-2 sm:mt-0">${{ item.price|floatformat:2 }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Handover Confirmation Buttons -->
+    {% if order.status == 'delivered' or order.status == 'handover_pending' %}
+    <div class="bg-white rounded-xl border border-slate-200 shadow-md p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4 text-slate-800">Handover Confirmation</h2>
+      <form method="POST" action="{% url 'orders:confirm_handover' order.id %}">
+        {% csrf_token %}
+        <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-lg transition hover:scale-105">
+          Confirm Handover
+        </button>
+      </form>
+    </div>
+    {% endif %}
+
+    {% if order.status == 'handover_confirmed' %}
+    <div class="bg-white rounded-xl border border-slate-200 shadow-md p-6">
+      <h2 class="text-xl font-semibold mb-4 text-slate-800">Receive Confirmation</h2>
+      <form method="POST" action="{% url 'orders:confirm_received' order.id %}">
+        {% csrf_token %}
+        <button type="submit" class="px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-lg transition hover:scale-105">
+          Confirm Received
+        </button>
+      </form>
+    </div>
+    {% endif %}
 
   </div>
 </div>

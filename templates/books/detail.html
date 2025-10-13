@@ -6,7 +6,7 @@
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
     <!-- Breadcrumb -->
     <div class="text-sm text-gray-500 mb-6">
-      <a href="{% url 'book_list' %}" class="hover:text-emerald-600 transition">Books</a> /
+      <a href="{% url 'books:book_list' %}" class="hover:text-emerald-600 transition">Books</a> /
       <span class="text-gray-700 font-medium">{{ book.title }}</span>
     </div>
 
@@ -75,7 +75,7 @@
         <!-- Action Buttons -->
 <div class="flex flex-col sm:flex-row gap-4">
     {% if book.price %}
-        <a href="{% url 'cart_add' book.id %}" 
+        <a href="{% url 'cart:cart_add' book.id %}" 
            class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 
                   text-white py-3 rounded-xl font-semibold text-center shadow-lg transform hover:scale-105 transition-all duration-300">
             Add to Cart
@@ -88,7 +88,7 @@
         </a>
     {% endif %}
 
-    <a href="{% url 'book_list' %}" 
+    <a href="{% url 'books:book_list' %}" 
        class="flex-1 border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 
               py-3 rounded-xl font-semibold text-center transition-all duration-300">
         ← Back to Books

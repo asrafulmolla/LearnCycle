@@ -26,7 +26,7 @@
 
             <!-- Quantity Controls -->
             <div class="flex flex-col items-center gap-2 mt-3 sm:mt-0">
-              <form method="post" action="{% url 'cart_update_quantity' item.book.id %}">
+              <form method="post" action="{% url 'cart:cart_update_quantity' item.book.id %}">
                 {% csrf_token %}
                 <div class="flex items-center border border-slate-300 rounded-lg overflow-hidden shadow-sm">
                   <button type="submit" name="action" value="decrease" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 font-bold">−</button>
@@ -38,7 +38,7 @@
 
             <!-- Remove Button -->
             <div class="mt-3 sm:mt-0">
-              <a href="{% url 'cart_remove' item.book.id %}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rose-100 text-rose-600 hover:bg-rose-200 hover:text-rose-700 font-medium text-sm shadow-sm transition">
+              <a href="{% url 'cart:cart_remove' item.book.id %}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rose-100 text-rose-600 hover:bg-rose-200 hover:text-rose-700 font-medium text-sm shadow-sm transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="flex justify-end mt-6">
-          <a href="{% url 'checkout' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition transform hover:scale-105">
+          <a href="{% url 'orders:checkout' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition transform hover:scale-105">
             Proceed to Checkout
           </a>
         </div>
@@ -94,7 +94,7 @@
     {% endif %}
 
     <div class="mt-8 text-center">
-      <a href="{% url 'book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Continue Shopping</a>
+      <a href="{% url 'books:book_list' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:shadow text-slate-700 transition transform hover:scale-105">← Continue Shopping</a>
     </div>
 
   </div>

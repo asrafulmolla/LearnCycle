@@ -11,53 +11,81 @@
     </div>
 
     <!-- Header -->
-    <div class="text-center mb-10">
+    <div class="text-center mb-10 animate-fade-in">
         <h2 class="text-3xl font-bold text-emerald-700">My Donation History</h2>
-        <p class="text-gray-600 mt-2">Track your donated books and their approval status.</p>
+        <p class="text-gray-600 mt-2">Track your donated books and their approval or handover status.</p>
     </div>
 
     {% if donations %}
-        <div class="w-full max-w-4xl bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl border border-gray-100 p-8">
+        <div class="w-full max-w-5xl bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl border border-gray-100 p-8 animate-fade-in">
             <ul class="divide-y divide-gray-200">
                 {% for donation in donations %}
-                    <li class="py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                        <!-- Image -->
-                        <div class="flex-shrink-0">
-                            {% if donation.image %}
-                                <img src="{{ donation.image.url }}" alt="{{ donation.title }}" class="w-24 h-32 object-cover rounded-xl shadow-md border border-gray-200">
+                <li class="py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    
+                    <!-- Image -->
+                    <div class="flex-shrink-0">
+                        {% if donation.image %}
+                            <img src="{{ donation.image.url }}" alt="{{ donation.title }}" class="w-24 h-32 object-cover rounded-xl shadow-md border border-gray-200">
+                        {% else %}
+                            <div class="w-24 h-32 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400 text-sm font-medium border border-dashed border-gray-300">
+                                No Image
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Book Info -->
+                    <div class="flex-1">
+                        <h3 class="text-xl font-semibold text-gray-800">{{ donation.title }}</h3>
+                        <p class="text-gray-600 text-sm mb-1">by {{ donation.author }}</p>
+                        <p class="text-sm text-gray-500">Category: <span class="font-medium text-emerald-700">{{ donation.category.name }}</span></p>
+                        <p class="text-sm text-gray-500">Condition: <span class="font-medium">{{ donation.get_condition_display }}</span></p>
+
+                        <!-- Status Section -->
+                        <p class="mt-2 text-sm">
+                            Status: 
+                            {% if donation.status == 'approved' %}
+                                <span class="inline-flex items-center text-green-600 font-semibold">Approved <span class="ml-1 text-xs text-green-700">(+10 points)</span></span>
+                            {% elif donation.status == 'rejected' %}
+                                <span class="inline-flex items-center text-red-600 font-semibold">Rejected</span>
+                            {% elif donation.status == 'requested' %}
+                                <span class="inline-flex items-center text-amber-500 font-semibold">Pending</span>
+                            {% elif donation.status == 'handover_confirmed' %}
+                                <span class="inline-flex items-center text-blue-600 font-semibold">Handover Confirmed — Awaiting Recipient</span>
+                            {% elif donation.status == 'received' %}
+                                <span class="inline-flex items-center text-green-600 font-semibold">Received by Recipient — 10 Points Awarded!</span>
                             {% else %}
-                                <div class="w-24 h-32 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400 text-sm font-medium border border-dashed border-gray-300">
-                                    No Image
-                                </div>
+                                <span class="inline-flex items-center text-gray-500 font-semibold">{{ donation.get_status_display }}</span>
+                            {% endif %}
+                        </p>
+
+                        <p class="text-xs text-gray-400 mt-3">Submitted on {{ donation.created_at|date:"M d, Y" }}</p>
+
+                        <!-- Actions (Forms for Confirmation) -->
+                        <div class="mt-4">
+                            {% if donation.status == 'requested' %}
+                            <form method="POST" action="{% url 'donations:confirm_donation_handover' donation.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition shadow-md">
+                                    Confirm Handover
+                                </button>
+                            </form>
+                            {% elif donation.status == 'handover_confirmed' %}
+                            <p class="text-green-600 font-semibold mt-2">Handover confirmed! Waiting for recipient to confirm receipt.</p>
+                            {% elif donation.status == 'received' %}
+                            <p class="text-green-600 font-semibold mt-2">Book received by recipient. 10 points awarded!</p>
                             {% endif %}
                         </div>
+                    </div>
 
-                        <!-- Book Info -->
-                        <div class="flex-1">
-                            <h3 class="text-xl font-semibold text-gray-800">{{ donation.title }}</h3>
-                            <p class="text-gray-600 text-sm mb-1">by {{ donation.author }}</p>
-                            <p class="text-sm text-gray-500">Category: <span class="font-medium text-emerald-700">{{ donation.category.name }}</span></p>
-                            <p class="text-sm text-gray-500">Condition: <span class="font-medium">{{ donation.condition }}</span></p>
-                            <p class="mt-2 text-sm">
-                                Status: 
-                                {% if donation.status == 'approved' %}
-                                    <span class="inline-flex items-center text-green-600 font-semibold">Approved <span class="ml-1 text-xs text-green-700">(+10 points)</span></span>
-                                {% elif donation.status == 'rejected' %}
-                                    <span class="inline-flex items-center text-red-600 font-semibold">Rejected</span>
-                                {% else %}
-                                    <span class="inline-flex items-center text-amber-500 font-semibold">Pending</span>
-                                {% endif %}
-                            </p>
-                            <p class="text-xs text-gray-400 mt-3">Submitted on {{ donation.created_at|date:"M d, Y" }}</p>
-                        </div>
-                    </li>
+                </li>
                 {% endfor %}
             </ul>
         </div>
     {% else %}
-        <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 border border-gray-100 text-center max-w-md">
+        <!-- Empty State -->
+        <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 border border-gray-100 text-center max-w-md animate-fade-in">
             <p class="text-gray-600 text-lg">You haven’t donated any books yet.</p>
-            <a href="{% url 'donate_book' %}" 
+            <a href="{% url 'donations:donate_book' %}" 
                class="mt-4 inline-block bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition-transform transform hover:scale-105">
                Donate Your First Book
             </a>
@@ -65,9 +93,9 @@
     {% endif %}
 
     <!-- Footer Links -->
-    <div class="mt-8 text-sm text-gray-600 flex gap-4">
-        <a href="{% url 'donate_book' %}" class="hover:text-emerald-600 font-medium transition">Donate a New Book</a>
-        <a href="{% url 'book_list' %}" class="hover:text-emerald-600 font-medium transition">← Back to Books</a>
+    <div class="mt-8 text-sm text-gray-600 flex gap-4 animate-fade-in">
+        <a href="{% url 'donations:donate_book' %}" class="hover:text-emerald-600 font-medium transition">Donate a New Book</a>
+        <a href="{% url 'books:book_list' %}" class="hover:text-emerald-600 font-medium transition">← Back to Books</a>
     </div>
 </div>
 

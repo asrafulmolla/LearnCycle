@@ -1,0 +1,28 @@
+<!-- templates/books/seller_books.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">My Selling Books</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for book in books %}
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-2">{{ book.title }}</h2>
+            <p class="text-gray-600 mb-2">by {{ book.author }}</p>
+            <p class="text-gray-600 mb-2">Category: {{ book.category.name }}</p>
+            <p class="text-gray-600 mb-2">Condition: {{ book.get_condition_display }}</p>
+            <p class="text-gray-600 mb-2">Price: ${{ book.price }}</p>
+            <p class="text-gray-600 mb-2">Available: {{ book.quantity }}</p>
+            <p class="text-gray-600 mb-2">Status: {% if book.is_available %}Available{% else %}Sold Out{% endif %}</p>
+            <div class="mt-4">
+                <a href="{% url 'books:book_detail' book.id %}" class="px-3 py-1 bg-blue-500 text-white rounded text-sm">View Details</a>
+                <a href="{% url 'books:edit_book' book.id %}" class="px-3 py-1 bg-yellow-500 text-white rounded text-sm">Edit</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center text-gray-500">You haven't listed any books for sale yet.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

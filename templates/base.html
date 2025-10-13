@@ -258,7 +258,7 @@
             <!-- Top Header Row -->
             <div class="flex items-center justify-between py-4 border-b border-gray-100">
                 <!-- Logo -->
-                <a href="{% url 'book_list' %}" class="flex items-center gap-3 group">
+                <a href="{% url 'books:book_list' %}" class="flex items-center gap-3 group">
                     <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-2 rounded-lg logo-icon group-hover:shadow-lg transition-all">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
@@ -272,7 +272,7 @@
 
                 <!-- Search Bar (Desktop) -->
                 <div class="hidden md:flex flex-1 max-w-xl mx-8">
-                    <form method="GET" action="{% url 'book_list' %}" class="relative w-full group">
+                    <form method="GET" action="{% url 'books:book_list' %}" class="relative w-full group">
                         <input 
                             type="text" 
                             name="q" 
@@ -299,7 +299,7 @@
                             </div>
                             <span class="text-xs mt-1 font-semibold">Account</span>
                         </a>
-                        <a href="{% url 'cart_detail' %}" class="flex flex-col items-center text-gray-700 hover:text-emerald-600 transition-all transform hover:scale-110 group relative">
+                        <a href="{% url 'cart:cart_detail' %}" class="flex flex-col items-center text-gray-700 hover:text-emerald-600 transition-all transform hover:scale-110 group relative">
                             <div class="relative">
                                 <svg class="w-6 h-6 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
@@ -323,16 +323,16 @@
             <!-- Navigation Bar -->
             <nav class="py-4">
                 <div class="flex flex-wrap justify-center gap-8 items-center">
-                    <a href="{% url 'book_list' %}" class="nav-link nav-item">Home</a>
-                    <a href="{% url 'about' %}" class="nav-link nav-item">About Us</a>
+                    <a href="{% url 'books:book_list' %}" class="nav-link nav-item">Home</a>
+                    <a href="{% url 'books:about' %}" class="nav-link nav-item">About Us</a>
                     <a href="{% url 'contact_us' %}" class="nav-link nav-item">Contact Us</a>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'donate_book' %}" class="nav-link nav-item">Donate Book</a>
-                        <a href="{% url 'request_book' %}" class="nav-link nav-item">Request Book</a>
+                        <a href="{% url 'donations:donate_book' %}" class="nav-link nav-item">Donate Book</a>
+                        <a href="{% url 'requests:request_book' %}" class="nav-link nav-item">Request Book</a>
                         <a href="{% url 'library_list' %}" class="nav-link nav-item">Digital Library</a>
-                        <a href="{% url 'cart_detail' %}" class="nav-link nav-item">Cart</a>
-                        <a href="{% url 'checkout' %}" class="nav-link nav-item">Checkout</a>
-                        <a href="{% url 'order_history' %}" class="nav-link nav-item">My Orders</a>
+                        <a href="{% url 'cart:cart_detail' %}" class="nav-link nav-item">Cart</a>
+                        <a href="{% url 'orders:checkout' %}" class="nav-link nav-item">Checkout</a>
+                        <a href="{% url 'orders:order_history' %}" class="nav-link nav-item">My Orders</a>
                         <a href="{% url 'logout' %}" class="btn-primary bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-lg text-sm font-bold nav-item">
                             <span class="relative z-10">Logout</span>
                         </a>
@@ -407,9 +407,9 @@
                 <div>
                     <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Shop</h4>
                     <ul class="space-y-2">
-                        <li><a href="{% url 'book_list' %}" class="text-sm hover:text-emerald-400 transition-colors">Books for Sale</a></li>
-                        <li><a href="{% url 'donate_book' %}" class="text-sm hover:text-emerald-400 transition-colors">Donate Book</a></li>
-                        <li><a href="{% url 'request_book' %}" class="text-sm hover:text-emerald-400 transition-colors">Request Book</a></li>
+                        <li><a href="{% url 'books:book_list' %}" class="text-sm hover:text-emerald-400 transition-colors">Books for Sale</a></li>
+                        <li><a href="{% url 'donations:donate_book' %}" class="text-sm hover:text-emerald-400 transition-colors">Donate Book</a></li>
+                        <li><a href="{% url 'requests:request_book' %}" class="text-sm hover:text-emerald-400 transition-colors">Request Book</a></li>
                         <li><a href="{% url 'library_list' %}" class="text-sm hover:text-emerald-400 transition-colors">Digital Library</a></li>
                     </ul>
                 </div>
@@ -429,7 +429,7 @@
                 <div>
                     <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Company</h4>
                     <ul class="space-y-2">
-                        <li><a href="{% url 'about' %}" class="text-sm hover:text-emerald-400 transition-colors">About Us</a></li>
+                        <li><a href="{% url 'books:about' %}" class="text-sm hover:text-emerald-400 transition-colors">About Us</a></li>
                         <li><a href="{% url 'privacy_policy' %}" class="text-sm hover:text-emerald-400 transition-colors">Privacy Policy</a></li>
                         <li><a href="{% url 'terms_of_service' %}" class="text-sm hover:text-emerald-400 transition-colors">Terms of Service</a></li>
                     </ul>

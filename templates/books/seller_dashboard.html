@@ -1,0 +1,30 @@
+<!-- templates/books/seller_dashboard.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto p-6">
+  <h2 class="text-2xl font-bold mb-6">Book Requests from Users</h2>
+  {% if pending_requests %}
+    <div class="space-y-4">
+      {% for req in pending_requests %}
+        <div class="border rounded-lg p-4 bg-gray-50">
+          <h3 class="font-bold">{{ req.title }} by {{ req.author }}</h3>
+          <p class="text-gray-600 text-sm mb-2">{{ req.description|truncatewords:15 }}</p>
+          <p class="text-xs text-gray-500">Requested by: {{ req.user.username }} on {{ req.created_at|date:"M d, Y" }}</p>
+          
+          {% if not req.matched_book %}
+            <a href="{% url 'books:sell_book_for_request' req.id %}" class="mt-2 inline-block bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">
+              I Have This Book → List It
+            </a>
+          {% else %}
+            <span class="text-green-600 font-semibold">✓ Book listed: 
+              <a href="{% url 'books:book_detail' req.matched_book.id %}" class="underline">View</a>
+            </span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-gray-600">No pending book requests.</p>
+  {% endif %}
+</div>
+{% endblock %}

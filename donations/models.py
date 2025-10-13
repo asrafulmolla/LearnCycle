@@ -7,9 +7,11 @@ class Donation(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('approved', 'Approved'),
+        ('requested', 'Requested'),   # New status
+        ('handover_confirmed', 'Handover Confirmed'), # New status
+        ('received', 'Received'),     # New status
         ('rejected', 'Rejected'),
     ]
-    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
@@ -29,14 +31,12 @@ class Donation(models.Model):
     @property
     def price(self):
         return None  # Donated books are free
-    
     @property
     def is_available(self):
         return self.status == 'approved'
-    
     @property
     def seller(self):
         return self.user  # For consistency with Book model
-
+    
     def __str__(self):
         return f"{self.title} by {self.user.username}"

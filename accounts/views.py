@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import Profile
 from .forms import UserUpdateForm, ProfileUpdateForm
 from .models import Profile
+from requests.models import BookRequest
 
 def register(request):
     if request.method == 'POST':
@@ -56,8 +57,15 @@ def profile(request):
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
+    matched_requests = BookRequest.objects.filter(
+        user=request.user,
+        is_fulfilled=True,
+        matched_book__isnull=False
+    )
+    
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'matched_requests': matched_requests,  # ← Add this
     }
     return render(request, 'accounts/profile.html', context)

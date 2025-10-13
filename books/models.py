@@ -24,6 +24,7 @@ class Book(models.Model):
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='books/', blank=True)
+    quantity = models.PositiveIntegerField(default=1) 
 
     class Meta:
         indexes = [
