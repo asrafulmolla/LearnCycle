@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Profile
 from .forms import UserUpdateForm, ProfileUpdateForm
-from .models import Profile
 from requests.models import BookRequest
 
 def register(request):
@@ -16,7 +15,8 @@ def register(request):
             user = form.save()
             phone = request.POST.get('full_phone')
             address = request.POST.get('address')
-            profile = Profile.objects.get(user=user)
+            # ✅ Safely get or create profile
+            profile, created = Profile.objects.get_or_create(user=user)
             profile.phone = phone
             profile.address = address
             profile.save()
@@ -45,9 +45,12 @@ def user_logout(request):
 
 @login_required
 def profile(request):
+    # ✅ Ensure profile exists before using it
+    profile_obj, created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile_obj)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -55,17 +58,25 @@ def profile(request):
             return redirect('profile')
     else:
         u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
+        p_form = ProfileUpdateForm(instance=profile_obj)
 
+    # Get fulfilled requests with book links
     matched_requests = BookRequest.objects.filter(
         user=request.user,
         is_fulfilled=True,
         matched_book__isnull=False
-    )
+    ).select_related('matched_book')
+
+     # Get donation requests (buyer history for donations)
+    donation_requests = BookRequest.objects.filter(
+        user=request.user,
+        donation__isnull=False
+    ).select_related('donation')
     
     context = {
         'u_form': u_form,
         'p_form': p_form,
-        'matched_requests': matched_requests,  # ← Add this
+        'matched_requests': matched_requests,
+        'donation_requests': donation_requests, 
     }
     return render(request, 'accounts/profile.html', context)

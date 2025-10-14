@@ -102,6 +102,17 @@ def sell_book(request):
         profile.is_seller = True
         profile.total_selling_books += 1
         profile.save()
+
+         # ✅ Auto-link to pending BookRequests (same title + author)
+        matching_requests = BookRequest.objects.filter(
+            title__iexact=title.strip(),
+            author__iexact=author.strip(),
+            matched_book__isnull=True
+        )
+        for req in matching_requests:
+            req.matched_book = book
+            req.is_fulfilled = True
+            req.save()
         
         messages.success(request, "Book listed for sale successfully!")
         return redirect('books:seller_books')

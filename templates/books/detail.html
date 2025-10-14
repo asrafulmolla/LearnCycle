@@ -72,6 +72,24 @@
 
         <p class="text-gray-600 leading-relaxed mb-8">{{ book.description|linebreaks }}</p>
 
+        <!-- Seller Info -->
+        <div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <h3 class="font-bold text-gray-800 mb-2">Seller Information</h3>
+          <p class="text-gray-700"><strong>Name:</strong> {{ book.seller.username }}</p>
+          
+          {% if book.seller.email %}
+            <p class="text-gray-700"><strong>Email:</strong> {{ book.seller.email }}</p>
+          {% endif %}
+          
+          {% if book.seller.profile.phone %}
+            <p class="text-gray-700"><strong>Phone:</strong> {{ book.seller.profile.phone }}</p>
+          {% endif %}
+          
+          {% if book.seller.profile.address %}
+            <p class="text-gray-700"><strong>Address:</strong> {{ book.seller.profile.address }}</p>
+          {% endif %}
+        </div>
+
         <!-- Action Buttons -->
 <div class="flex flex-col sm:flex-row gap-4">
     {% if book.price %}
@@ -105,7 +123,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
     {% for related in related_books %}
     <div class="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
-      <a href="{% url 'book_detail' related.id %}">
+      <a href="{% url 'books:book_detail' related.id %}">
         <div class="relative">
           {% if related.image %}
             <img src="{{ related.image.url }}" alt="{{ related.title }}" 

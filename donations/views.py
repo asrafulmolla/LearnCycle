@@ -6,6 +6,7 @@ from .models import Donation
 from .forms import DonationForm
 from orders.models import Order, OrderItem
 from django.utils import timezone
+from requests.models import BookRequest
 
 @login_required
 def donate_book(request):
@@ -28,9 +29,19 @@ def donate_book(request):
 @login_required
 def request_donated_book(request, id):
     donation = get_object_or_404(Donation, id=id, status='approved')
+        # Prevent users from requesting their own donations
     if donation.user == request.user:
         messages.error(request, "You cannot request your own donation.")
-        return redirect('book_list')
+        return redirect('books:book_list')
+    
+    BookRequest.objects.create(
+        user=request.user,
+        title=donation.title,
+        author=donation.author,
+        description=donation.description,
+        donation=donation,
+        is_fulfilled=False
+    )
 
     # Create order for donation (as before)
     order = Order.objects.create(
@@ -52,7 +63,7 @@ def request_donated_book(request, id):
         profile.save()
 
     messages.success(request, f'Your request for "{donation.title}" has been submitted.')
-    return redirect('book_list')
+    return redirect('books:book_list')
 
 @login_required
 def confirm_donation_handover(request, donation_id):
@@ -75,16 +86,11 @@ def confirm_donation_received(request, donation_id):
         messages.error(request, "This donation has not been confirmed for handover yet.")
         return redirect('donations:donation_history')
     
-    # Mark as received
+    # Award points ONLY here
     donation.status = 'received'
-    donation.save()
-    
-    # Award points to donor
     donation.user.profile.book_points += 10
     donation.user.profile.save()
-    
-    messages.success(request, "Book received successfully! Points have been awarded to the donor.")
-    return redirect('donations:donation_history')
+    donation.save()
 
 @login_required
 def donation_history(request):

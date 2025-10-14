@@ -32,6 +32,7 @@
               {% if request.category %}{{ request.category.name }}{% else %}N/A{% endif %}
             </span>
           </p>
+          
 
           <!-- Description -->
           {% if request.description %}
@@ -40,6 +41,8 @@
             <span class="text-gray-500">{{ request.description|truncatewords:20 }}</span>
           </p>
           {% endif %}
+
+          
 
           <!-- Status -->
           <p class="text-sm mt-2">
@@ -50,6 +53,15 @@
               <span class="text-amber-500 font-semibold">Pending</span>
             {% endif %}
           </p>
+          <!-- Matched Book Link -->
+          {% if request.is_fulfilled and request.matched_book %}
+          <p class="text-sm mt-1">
+            <strong>Matched Book:</strong>
+            <a href="{% url 'books:book_detail' request.matched_book.id %}" class="text-blue-600 hover:underline font-medium">
+              {{ request.matched_book.title }}
+            </a>
+          </p>
+          {% endif %}
 
           <p class="text-xs text-gray-400 mt-1">Submitted on {{ request.created_at|date:"M d, Y" }}</p>
 

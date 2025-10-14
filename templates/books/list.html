@@ -103,7 +103,6 @@
             </div>
 
             <form method="GET" action="{% url 'books:book_list' %}" class="flex flex-wrap gap-3 items-center">
-                <input type="text" name="q" value="{{ query }}" placeholder="Search books..." class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 transition text-sm font-medium shadow-lg w-56 md:w-72">
                 
                 <select name="category" onchange="this.form.submit()" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 transition text-sm font-medium shadow-lg">
                     <option value="">All Categories</option>
