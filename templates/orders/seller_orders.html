@@ -1,43 +1,289 @@
 <!-- templates/orders/seller_orders.html -->
 {% extends 'base.html' %}
 {% block content %}
-<div class="max-w-6xl mx-auto p-6">
-  <h2 class="text-2xl font-bold mb-6">Your Orders (as Seller)</h2>
-  {% if orders %}
-    <div class="space-y-4">
-      {% for order in orders %}
-        <div class="border rounded-lg p-4 bg-white shadow">
-          <p><strong>Order #{{ order.id }}</strong> | {{ order.created_at|date:"M d, Y" }}</p>
-          <p>Status: <span class="font-semibold">{{ order.get_status_display }}</span></p>
-          <p>Buyer: {{ order.user.username }}</p>
-          
-          {% if order.status == 'confirmed' %}
-            <div class="mt-3 space-x-2">
-              <form method="POST" action="{% url 'orders:seller_confirm_order' order.id %}" class="inline">
-                {% csrf_token %}
-                <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded">Confirm Order</button>
-              </form>
-              <form method="POST" action="{% url 'orders:seller_cancel_order' order.id %}" class="inline">
-                {% csrf_token %}
-                <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded">Cancel Order</button>
-              </form>
-            </div>
-          {% elif order.status == 'seller_confirmed' %}
-            <form method="POST" action="{% url 'orders:mark_handover_ready' order.id %}" class="mt-3 inline">
-              {% csrf_token %}
-              <button type="submit" class="bg-amber-600 text-white px-3 py-1 rounded">Mark Ready for Handover</button>
-            </form>
-          {% elif order.status == 'handover_pending' %}
-            <form method="POST" action="{% url 'orders:complete_order' order.id %}" class="mt-3 inline">
-              {% csrf_token %}
-              <button type="submit" class="bg-emerald-700 text-white px-3 py-1 rounded">Mark as Completed</button>
-            </form>
-          {% endif %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 relative overflow-hidden">
+  <!-- Animated Background -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute w-72 h-72 bg-blue-300/20 rounded-full blur-3xl top-20 left-10 animate-pulse"></div>
+    <div class="absolute w-96 h-96 bg-purple-300/20 rounded-full blur-3xl bottom-20 right-10 animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute w-64 h-64 bg-indigo-300/15 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <div class="mb-10 animate-fade-in-down">
+      <div class="flex items-center space-x-4 mb-4">
+        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl transform hover:scale-110 hover:rotate-3 transition-all duration-300">
+          <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+          </svg>
         </div>
-      {% endfor %}
+        <div>
+          <h2 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Your Orders
+          </h2>
+          <p class="text-gray-600 text-lg">Manage orders as a seller</p>
+        </div>
+      </div>
     </div>
-  {% else %}
-    <p class="text-gray-600">No orders yet.</p>
-  {% endif %}
+
+    {% if orders %}
+      <!-- Orders List -->
+      <div class="space-y-6">
+        {% for order in orders %}
+        <div class="group bg-white/95 backdrop-blur-md rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 overflow-hidden transform hover:-translate-y-1 transition-all duration-300 animate-fade-in-up" style="animation-delay: {{ forloop.counter0|stringformat:'d' }}00ms;">
+          
+          <!-- Order Header -->
+          <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-white font-bold text-lg">Order #{{ order.id }}</p>
+                <p class="text-blue-100 text-sm flex items-center space-x-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>{{ order.created_at|date:"M d, Y" }}</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Status Badge -->
+            <div>
+              {% if order.status == 'confirmed' %}
+                <span class="px-4 py-2 bg-yellow-500 text-white text-sm font-bold rounded-full shadow-lg flex items-center space-x-2 animate-pulse-soft">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>Awaiting Action</span>
+                </span>
+              {% elif order.status == 'seller_confirmed' %}
+                <span class="px-4 py-2 bg-blue-500 text-white text-sm font-bold rounded-full shadow-lg flex items-center space-x-2 animate-pulse-soft">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>Confirmed</span>
+                </span>
+              {% elif order.status == 'handover_pending' %}
+                <span class="px-4 py-2 bg-amber-500 text-white text-sm font-bold rounded-full shadow-lg flex items-center space-x-2 animate-bounce-soft">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path>
+                    <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"></path>
+                  </svg>
+                  <span>Ready for Handover</span>
+                </span>
+              {% elif order.status == 'completed' %}
+                <span class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-bold rounded-full shadow-lg flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>Completed</span>
+                </span>
+              {% elif order.status == 'cancelled' %}
+                <span class="px-4 py-2 bg-red-500 text-white text-sm font-bold rounded-full shadow-lg flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>Cancelled</span>
+                </span>
+              {% else %}
+                <span class="px-4 py-2 bg-gray-500 text-white text-sm font-bold rounded-full shadow-lg">
+                  {{ order.get_status_display }}
+                </span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Order Details -->
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <!-- Buyer Info -->
+              <div class="flex items-start space-x-3 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-1">Buyer</p>
+                  <p class="text-gray-800 font-bold text-lg">{{ order.user.username }}</p>
+                </div>
+              </div>
+
+              <!-- Status Info -->
+              <div class="flex items-start space-x-3 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100">
+                <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-purple-600 font-semibold uppercase tracking-wide mb-1">Status</p>
+                  <p class="text-gray-800 font-bold">{{ order.get_status_display }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+              {% if order.status == 'confirmed' %}
+                <div class="p-5 bg-gradient-to-br from-yellow-50 to-amber-50 border-2 border-yellow-200 rounded-xl">
+                  <div class="flex items-start space-x-3 mb-4">
+                    <svg class="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                      <p class="text-yellow-900 font-semibold mb-1">Action Required</p>
+                      <p class="text-yellow-700 text-sm">Please confirm or cancel this order</p>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-3">
+                    <form method="POST" action="{% url 'orders:seller_confirm_order' order.id %}" class="flex-1 min-w-[200px]">
+                      {% csrf_token %}
+                      <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-semibold flex items-center justify-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>Confirm Order</span>
+                      </button>
+                    </form>
+                    <form method="POST" action="{% url 'orders:seller_cancel_order' order.id %}" class="flex-1 min-w-[200px]">
+                      {% csrf_token %}
+                      <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-semibold flex items-center justify-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span>Cancel Order</span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+              {% elif order.status == 'seller_confirmed' %}
+                <div class="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl">
+                  <div class="flex items-start space-x-3 mb-4">
+                    <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                      <p class="text-blue-900 font-semibold mb-1">Next Step</p>
+                      <p class="text-blue-700 text-sm">Mark the order as ready for handover when prepared</p>
+                    </div>
+                  </div>
+                  <form method="POST" action="{% url 'orders:mark_handover_ready' order.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-semibold flex items-center justify-center space-x-2">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span>Mark Ready for Handover</span>
+                    </button>
+                  </form>
+                </div>
+
+              {% elif order.status == 'handover_pending' %}
+                <div class="p-5 bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-xl">
+                  <div class="flex items-start space-x-3 mb-4">
+                    <svg class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"></path>
+                      <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"></path>
+                    </svg>
+                    <div>
+                      <p class="text-emerald-900 font-semibold mb-1">Final Step</p>
+                      <p class="text-emerald-700 text-sm">Mark as completed after successful handover to buyer</p>
+                    </div>
+                  </div>
+                  <form method="POST" action="{% url 'orders:complete_order' order.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-semibold flex items-center justify-center space-x-2">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span>Mark as Completed</span>
+                    </button>
+                  </form>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <!-- Empty State -->
+      <div class="bg-white/95 backdrop-blur-md shadow-2xl rounded-3xl p-12 border border-gray-100 text-center max-w-2xl mx-auto animate-fade-in-up">
+        <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full mb-6">
+          <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+          </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 mb-3">No Orders Yet</h3>
+        <p class="text-gray-600 text-lg">You haven't received any orders as a seller.</p>
+      </div>
+    {% endif %}
+  </div>
 </div>
+
+<style>
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.8s ease-out both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out both;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 2s ease-in-out infinite;
+}
+</style>
 {% endblock %}
