@@ -1,46 +1,276 @@
 <!-- templates/books/sell_for_request.html -->
 {% extends 'base.html' %}
 {% block content %}
-<div class="max-w-2xl mx-auto p-6">
-  <h2 class="text-2xl font-bold mb-4">List Book for Request</h2>
-  <p class="mb-4"><strong>Requested:</strong> "{{ book_request.title }}" by {{ book_request.author }}</p>
-  
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="title" value="{{ book_request.title }}">
-    <input type="hidden" name="author" value="{{ book_request.author }}">
+<div class="max-w-7xl mx-auto p-6">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     
-    <div class="mb-4">
-      <label>Category</label>
-      <select name="category" class="w-full p-2 border rounded" required>
-        {% for cat in categories %}
-          <option value="{{ cat.id }}">{{ cat.name }}</option>
-        {% endfor %}
-      </select>
+    <!-- Left Sidebar - Professional Info -->
+    <div class="lg:col-span-1 space-y-6">
+      
+      <!-- Request Info Card -->
+      <div class="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-5 shadow-md">
+        <div class="flex items-center space-x-2 mb-4">
+          <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-800">Requested Book</h3>
+        </div>
+        <div class="space-y-2">
+          <div>
+            <p class="text-xs text-gray-600 uppercase tracking-wide mb-1">Title</p>
+            <p class="font-bold text-gray-900">"{{ book_request.title }}"</p>
+          </div>
+          <div>
+            <p class="text-xs text-gray-600 uppercase tracking-wide mb-1">Author</p>
+            <p class="font-semibold text-gray-800">{{ book_request.author }}</p>
+          </div>
+          <div class="pt-3 border-t border-blue-200">
+            <p class="text-xs text-gray-600 uppercase tracking-wide mb-1">Description</p>
+            <p class="text-sm text-gray-700">{{ book_request.description|truncatewords:20 }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listing Guidelines -->
+      <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-md">
+        <div class="flex items-center space-x-2 mb-4">
+          <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-800">Listing Guidelines</h3>
+        </div>
+        <ul class="space-y-3">
+          <li class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+            <div>
+              <p class="text-sm font-semibold text-gray-800">Quality Photos</p>
+              <p class="text-xs text-gray-600">Clear, well-lit images showing the cover and condition</p>
+            </div>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+            <div>
+              <p class="text-sm font-semibold text-gray-800">Honest Condition</p>
+              <p class="text-xs text-gray-600">Accurately describe any wear, marks, or damage</p>
+            </div>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">3</span>
+            <div>
+              <p class="text-sm font-semibold text-gray-800">Fair Pricing</p>
+              <p class="text-xs text-gray-600">Research similar listings to price competitively</p>
+            </div>
+          </li>
+          <li class="flex items-start space-x-3">
+            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold">4</span>
+            <div>
+              <p class="text-sm font-semibold text-gray-800">Complete Details</p>
+              <p class="text-xs text-gray-600">Fill all fields to help buyers make decisions</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Condition Guide -->
+      <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 shadow-md">
+        <div class="flex items-center space-x-2 mb-4">
+          <div class="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-800">Condition Guide</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="bg-white rounded-lg p-3 border border-amber-100">
+            <p class="font-semibold text-sm text-gray-800 mb-1">New</p>
+            <p class="text-xs text-gray-600">Unread, pristine condition, no marks or damage</p>
+          </div>
+          <div class="bg-white rounded-lg p-3 border border-amber-100">
+            <p class="font-semibold text-sm text-gray-800 mb-1">Like New</p>
+            <p class="text-xs text-gray-600">Barely used, minor shelf wear, no markings</p>
+          </div>
+          <div class="bg-white rounded-lg p-3 border border-amber-100">
+            <p class="font-semibold text-sm text-gray-800 mb-1">Good</p>
+            <p class="text-xs text-gray-600">Normal wear, possible highlighting or notes</p>
+          </div>
+          <div class="bg-white rounded-lg p-3 border border-amber-100">
+            <p class="font-semibold text-sm text-gray-800 mb-1">Fair</p>
+            <p class="text-xs text-gray-600">Heavy wear, water damage, or torn pages</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Tips -->
+      <div class="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-5 shadow-md">
+        <div class="flex items-center space-x-2 mb-4">
+          <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <h3 class="font-bold text-gray-800">Pro Tips</h3>
+        </div>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-500 mt-0.5">•</span>
+            <span>Books in better condition sell faster</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-500 mt-0.5">•</span>
+            <span>Include ISBN if available for credibility</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-500 mt-0.5">•</span>
+            <span>Respond quickly to buyer inquiries</span>
+          </li>
+          <li class="flex items-start space-x-2">
+            <span class="text-purple-500 mt-0.5">•</span>
+            <span>Consider bundling with related books</span>
+          </li>
+        </ul>
+      </div>
+
     </div>
-    <div class="mb-4">
-      <label>Price ($)</label>
-      <input type="number" step="0.01" name="price" class="w-full p-2 border rounded" required>
+
+    <!-- Right Main Content - Form -->
+    <div class="lg:col-span-2">
+      <!-- Header Section -->
+      <div class="mb-6">
+        <div class="flex items-center space-x-3 mb-2">
+          <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center shadow-md">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold text-gray-800">List Your Book</h2>
+            <p class="text-gray-600 text-sm">Complete the form below to list your book</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+        <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4">
+          <h3 class="text-white font-semibold text-lg">Book Details</h3>
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
+          {% csrf_token %}
+          <input type="hidden" name="title" value="{{ book_request.title }}">
+          <input type="hidden" name="author" value="{{ book_request.author }}">
+          
+          <!-- Category Field -->
+          <div class="group">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Category
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select name="category" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none appearance-none bg-white" required>
+                <option value="" disabled selected>Select a category</option>
+                {% for cat in categories %}
+                  <option value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Field -->
+          <div class="group">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Price
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500 font-semibold">$</span>
+              <input type="number" step="0.01" name="price" placeholder="0.00" class="w-full pl-8 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none" required>
+            </div>
+          </div>
+
+          <!-- Condition Field -->
+          <div class="group">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Condition
+              <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select name="condition" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none appearance-none bg-white" required>
+                <option value="" disabled selected>Select condition</option>
+                <option value="new">New - Pristine condition</option>
+                <option value="like_new">Like New - Barely used</option>
+                <option value="good">Good - Normal wear</option>
+                <option value="fair">Fair - Well used</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Field -->
+          <div class="group">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Description
+            </label>
+            <textarea name="description" rows="4" placeholder="Describe your book's condition, any special features, or additional details..." class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all outline-none resize-none">{{ book_request.description }}</textarea>
+            <p class="text-xs text-gray-500 mt-1">Optional: Add any additional details about your book</p>
+          </div>
+
+          <!-- Image Upload Field -->
+          <div class="group">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Book Image
+            </label>
+            <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-emerald-400 transition-colors bg-gray-50">
+              <div class="space-y-2">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <div class="text-sm text-gray-600">
+                  <label class="relative cursor-pointer rounded-md font-semibold text-emerald-600 hover:text-emerald-700">
+                    <span>Upload a file</span>
+                    <input type="file" name="image" accept="image/*" class="sr-only">
+                  </label>
+                  <p class="pl-1 inline">or drag and drop</p>
+                </div>
+                <p class="text-xs text-gray-500">PNG, JPG, WEBP up to 10MB</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+            <a href="{% url 'books:seller_dashboard' %}" class="inline-flex items-center space-x-2 px-6 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+              </svg>
+              <span>Cancel</span>
+            </a>
+            
+            <button type="submit" class="inline-flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:from-emerald-700 hover:to-emerald-800 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg font-semibold">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>List This Book</span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="mb-4">
-      <label>Condition</label>
-      <select name="condition" class="w-full p-2 border rounded" required>
-        <option value="new">New</option>
-        <option value="like_new">Like New</option>
-        <option value="good">Good</option>
-        <option value="fair">Fair</option>
-      </select>
-    </div>
-    <div class="mb-4">
-      <label>Description</label>
-      <textarea name="description" class="w-full p-2 border rounded" rows="4">{{ book_request.description }}</textarea>
-    </div>
-    <div class="mb-4">
-      <label>Image</label>
-      <input type="file" name="image" accept="image/*" class="w-full p-2 border rounded">
-    </div>
-    <button type="submit" class="bg-emerald-600 text-white px-6 py-2 rounded">List This Book</button>
-    <a href="{% url 'books:seller_dashboard' %}" class="ml-4 text-gray-600">Cancel</a>
-  </form>
+
+  </div>
 </div>
 {% endblock %}

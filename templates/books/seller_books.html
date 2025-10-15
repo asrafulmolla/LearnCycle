@@ -2,26 +2,152 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">My Selling Books</h1>
+<div class="container mx-auto px-4 py-8 max-w-7xl">
     
+    <!-- Header Section -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-bold text-gray-800">My Selling Books</h1>
+                    <p class="text-gray-600">Manage your book listings and track sales</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Books Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for book in books %}
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold mb-2">{{ book.title }}</h2>
-            <p class="text-gray-600 mb-2">by {{ book.author }}</p>
-            <p class="text-gray-600 mb-2">Category: {{ book.category.name }}</p>
-            <p class="text-gray-600 mb-2">Condition: {{ book.get_condition_display }}</p>
-            <p class="text-gray-600 mb-2">Price: ${{ book.price }}</p>
-            <p class="text-gray-600 mb-2">Available: {{ book.quantity }}</p>
-            <p class="text-gray-600 mb-2">Status: {% if book.is_available %}Available{% else %}Sold Out{% endif %}</p>
-            <div class="mt-4">
-                <a href="{% url 'books:book_detail' book.id %}" class="px-3 py-1 bg-blue-500 text-white rounded text-sm">View Details</a>
-                <a href="{% url 'books:edit_book' book.id %}" class="px-3 py-1 bg-yellow-500 text-white rounded text-sm">Edit</a>
+        <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 hover:border-blue-300 transform hover:-translate-y-1">
+            
+            <!-- Book Image -->
+            <div class="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                {% if book.image %}
+                <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center">
+                    <svg class="w-20 h-20 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                {% endif %}
+                
+                <!-- Status Badge -->
+                <div class="absolute top-3 right-3">
+                    {% if book.is_available %}
+                    <span class="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full shadow-lg">
+                        ✓ Available
+                    </span>
+                    {% else %}
+                    <span class="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full shadow-lg">
+                        ✗ Sold Out
+                    </span>
+                    {% endif %}
+                </div>
+
+                <!-- Price Tag -->
+                <div class="absolute bottom-3 left-3">
+                    <div class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg font-bold text-lg">
+                        ${{ book.price }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book Info -->
+            <div class="p-5">
+                <!-- Title & Author -->
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 mb-1">
+                        {{ book.title }}
+                    </h2>
+                    <p class="text-sm text-gray-600 flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <span>{{ book.author }}</span>
+                    </p>
+                </div>
+
+                <!-- Details Grid -->
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600 flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            <span>Category:</span>
+                        </span>
+                        <span class="font-semibold text-gray-800">{{ book.category.name }}</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600 flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Condition:</span>
+                        </span>
+                        <span class="font-semibold text-gray-800">
+                            {% if book.condition == 'new' %}
+                                 {{ book.get_condition_display }}
+                            {% elif book.condition == 'like_new' %}
+                                 {{ book.get_condition_display }}
+                            {% elif book.condition == 'good' %}
+                                 {{ book.get_condition_display }}
+                            {% else %}
+                                 {{ book.get_condition_display }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-600 flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                            <span>Available:</span>
+                        </span>
+                        <span class="font-semibold text-gray-800">{{ book.quantity }} {% if book.quantity == 1 %}copy{% else %}copies{% endif %}</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-2 pt-4 border-t border-gray-200">
+                    <a href="{% url 'books:book_detail' book.id %}" class="flex-1 inline-flex items-center justify-center space-x-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <span>View</span>
+                    </a>
+                    <a href="{% url 'books:edit_book' book.id %}" class="flex-1 inline-flex items-center justify-center space-x-1 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors text-sm font-medium">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        <span>Edit</span>
+                    </a>
+                </div>
             </div>
         </div>
         {% empty %}
-        <div class="col-span-full text-center text-gray-500">You haven't listed any books for sale yet.</div>
+        <!-- Empty State -->
+        <div class="col-span-full">
+            <div class="text-center py-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-dashed border-gray-300">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-gray-200 rounded-full mb-6">
+                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-700 mb-2">No Books Listed Yet</h3>
+                <p class="text-gray-500">Start selling by listing your first book!</p>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>

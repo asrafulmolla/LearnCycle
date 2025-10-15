@@ -2,59 +2,309 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Edit Book</h1>
-    
-    <form method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6">
-        {% csrf_token %}
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Title</label>
-            <input type="text" name="title" value="{{ book.title }}" required class="w-full px-4 py-2 border border-gray-300 rounded">
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Sidebar - Book Info & Tips -->
+        <div class="lg:col-span-1 space-y-6">
+            
+            <!-- Current Book Preview -->
+            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-6 shadow-lg text-white transform hover:scale-105 transition-transform duration-300">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl">Editing Book</h3>
+                        <p class="text-sm text-indigo-100">Update your listing</p>
+                    </div>
+                </div>
+                {% if book.image %}
+                <div class="mt-4 rounded-lg overflow-hidden border-2 border-white border-opacity-30">
+                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-full h-48 object-cover">
+                </div>
+                {% endif %}
+                <div class="mt-4 space-y-2">
+                    <p class="text-sm text-indigo-100">Current Listing:</p>
+                    <p class="font-bold text-lg">{{ book.title }}</p>
+                    <p class="text-sm text-indigo-100">by {{ book.author }}</p>
+                </div>
+            </div>
+
+            <!-- Edit Guidelines -->
+            <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-800">Editing Best Practices</h3>
+                </div>
+                <ul class="space-y-3">
+                    <li class="flex items-start space-x-3 group">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold group-hover:scale-110 transition-transform">1</span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-800">Keep It Accurate</p>
+                            <p class="text-xs text-gray-600">Ensure all details match your book's current state</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start space-x-3 group">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold group-hover:scale-110 transition-transform">2</span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-800">Update Photos</p>
+                            <p class="text-xs text-gray-600">Add new images if condition has changed</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start space-x-3 group">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold group-hover:scale-110 transition-transform">3</span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-800">Adjust Pricing</p>
+                            <p class="text-xs text-gray-600">Stay competitive with current market rates</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start space-x-3 group">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-bold group-hover:scale-110 transition-transform">4</span>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-800">Complete Details</p>
+                            <p class="text-xs text-gray-600">More details lead to faster sales</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Price Adjustment Tips -->
+            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-5 shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-800">Boost Your Sales</h3>
+                </div>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li class="flex items-start space-x-2 hover:translate-x-1 transition-transform">
+                        <span class="text-emerald-500 mt-0.5">💡</span>
+                        <span>Lower price slightly to attract buyers</span>
+                    </li>
+                    <li class="flex items-start space-x-2 hover:translate-x-1 transition-transform">
+                        <span class="text-emerald-500 mt-0.5">💡</span>
+                        <span>Add more photos from different angles</span>
+                    </li>
+                    <li class="flex items-start space-x-2 hover:translate-x-1 transition-transform">
+                        <span class="text-emerald-500 mt-0.5">💡</span>
+                        <span>Highlight special features or bonuses</span>
+                    </li>
+                    <li class="flex items-start space-x-2 hover:translate-x-1 transition-transform">
+                        <span class="text-emerald-500 mt-0.5">💡</span>
+                        <span>Update description with more details</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Condition Guide -->
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-10 h-10 bg-amber-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-800">Condition Reference</h3>
+                </div>
+                <div class="space-y-2">
+                    <div class="bg-white rounded-lg p-3 border border-amber-100 hover:border-amber-300 transition-colors">
+                        <p class="font-semibold text-sm text-gray-800">📘 New</p>
+                        <p class="text-xs text-gray-600">Unread, no wear</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100 hover:border-amber-300 transition-colors">
+                        <p class="font-semibold text-sm text-gray-800">📗 Like New</p>
+                        <p class="text-xs text-gray-600">Minimal wear, no marks</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100 hover:border-amber-300 transition-colors">
+                        <p class="font-semibold text-sm text-gray-800">📙 Good</p>
+                        <p class="text-xs text-gray-600">Normal wear, possible notes</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100 hover:border-amber-300 transition-colors">
+                        <p class="font-semibold text-sm text-gray-800">📕 Fair</p>
+                        <p class="text-xs text-gray-600">Heavy wear or damage</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning Card -->
+            <div class="bg-gradient-to-br from-red-50 to-pink-50 border border-red-200 rounded-xl p-5 shadow-md">
+                <div class="flex items-start space-x-3">
+                    <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <div>
+                        <h4 class="text-sm font-semibold text-red-900 mb-1">Important Note</h4>
+                        <p class="text-xs text-red-800">Changes will be visible to all buyers immediately. Ensure accuracy before updating.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Author</label>
-            <input type="text" name="author" value="{{ book.author }}" required class="w-full px-4 py-2 border border-gray-300 rounded">
+
+        <!-- Right Main Content - Edit Form -->
+        <div class="lg:col-span-2">
+            <div class="mb-6">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Edit Book Listing</h1>
+                <p class="text-gray-600">Update the information for your book listing</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
+                    <h3 class="text-white font-semibold text-lg">Book Details</h3>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    {% csrf_token %}
+                    
+                    <!-- Title Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Book Title
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="title" value="{{ book.title }}" required placeholder="Enter the book title" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none">
+                    </div>
+
+                    <!-- Author Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Author Name
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="author" value="{{ book.author }}" required placeholder="Enter the author's name" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none">
+                    </div>
+
+                    <!-- Category Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Category
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select name="category" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none appearance-none bg-white">
+                                <option value="">Select Category</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.id == book.category.id %}selected{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Price (USD)
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500 font-semibold">$</span>
+                            <input type="number" name="price" step="0.01" min="0" value="{{ book.price }}" required placeholder="0.00" class="w-full pl-8 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Condition Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Book Condition
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select name="condition" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none appearance-none bg-white">
+                                <option value="">Select Condition</option>
+                                <option value="new" {% if book.condition == 'new' %}selected{% endif %}>📘 New - Unread, pristine condition</option>
+                                <option value="like_new" {% if book.condition == 'like_new' %}selected{% endif %}>📗 Like New - Barely used, no marks</option>
+                                <option value="good" {% if book.condition == 'good' %}selected{% endif %}>📙 Good - Normal wear, some markings</option>
+                                <option value="fair" {% if book.condition == 'fair' %}selected{% endif %}>📕 Fair - Heavy wear, marks or damage</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Description
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <textarea name="description" required rows="4" placeholder="Provide a detailed description of the book's condition, any highlights or markings, special features, etc." class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none resize-none">{{ book.description }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Be thorough to help buyers understand what they're getting</p>
+                    </div>
+
+                    <!-- Quantity Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Quantity Available
+                        </label>
+                        <input type="number" name="quantity" min="1" value="{{ book.quantity }}" placeholder="1" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all outline-none">
+                        <p class="text-xs text-gray-500 mt-1">Update if you have more or fewer copies available</p>
+                    </div>
+
+                    <!-- Image Upload Field -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Update Book Image
+                        </label>
+                        {% if book.image %}
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-600 mb-2">Current Image:</p>
+                            <div class="relative inline-block">
+                                <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-32 h-32 object-cover rounded-lg border-2 border-gray-200 shadow-md">
+                                <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-indigo-400 transition-colors bg-gray-50">
+                            <div class="space-y-2">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <div class="text-sm text-gray-600">
+                                    <label class="relative cursor-pointer rounded-md font-semibold text-indigo-600 hover:text-indigo-700">
+                                        <span>Upload new photo</span>
+                                        <input type="file" name="image" accept="image/*" class="sr-only">
+                                    </label>
+                                    <p class="pl-1 inline">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500">PNG, JPG, WEBP up to 10MB</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-6 border-t border-gray-200">
+                        <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-4 rounded-lg hover:from-indigo-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl font-semibold text-lg flex items-center justify-center space-x-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Update Book Listing</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Category</label>
-            <select name="category" required class="w-full px-4 py-2 border border-gray-300 rounded">
-                <option value="">Select Category</option>
-                {% for category in categories %}
-                <option value="{{ category.id }}" {% if category.id == book.category.id %}selected{% endif %}>{{ category.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Price ($)</label>
-            <input type="number" name="price" step="0.01" min="0" value="{{ book.price }}" required class="w-full px-4 py-2 border border-gray-300 rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Condition</label>
-            <select name="condition" required class="w-full px-4 py-2 border border-gray-300 rounded">
-                <option value="">Select Condition</option>
-                <option value="new" {% if book.condition == 'new' %}selected{% endif %}>New</option>
-                <option value="like_new" {% if book.condition == 'like_new' %}selected{% endif %}>Like New</option>
-                <option value="good" {% if book.condition == 'good' %}selected{% endif %}>Good</option>
-                <option value="fair" {% if book.condition == 'fair' %}selected{% endif %}>Fair</option>
-            </select>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Description</label>
-            <textarea name="description" required class="w-full px-4 py-2 border border-gray-300 rounded" rows="4">{{ book.description }}</textarea>
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Quantity</label>
-            <input type="number" name="quantity" min="1" value="{{ book.quantity }}" class="w-full px-4 py-2 border border-gray-300 rounded">
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 font-semibold mb-2">Image</label>
-            <input type="file" name="image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded">
-            {% if book.image %}
-            <p class="mt-2">Current image:</p>
-            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-32 h-32 object-cover mt-2">
-            {% endif %}
-        </div>
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Update Book</button>
-    </form>
+
+    </div>
 </div>
 {% endblock %}
