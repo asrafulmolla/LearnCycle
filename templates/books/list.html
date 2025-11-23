@@ -30,8 +30,17 @@
     background-clip: text;
 }
 
-.book-card { animation: fadeIn 0.6s ease-out forwards; opacity: 0; transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
-.book-card:hover { transform: translateY(-16px) scale(1.02); box-shadow: 0 25px 50px rgba(16, 185, 129, 0.25); }
+.book-card { 
+    animation: fadeIn 0.6s ease-out forwards; 
+    opacity: 0; 
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); 
+    background: linear-gradient(to bottom, #ffffff, #fafafa);
+}
+.book-card:hover { 
+    transform: translateY(-12px); 
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2), 0 0 0 1px rgba(16, 185, 129, 0.1); 
+    background: #ffffff;
+}
 
 .book-image { position: relative; overflow: hidden; background: linear-gradient(135deg, #f0fdf4, #f0fdf4); }
 .book-image img { transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
@@ -79,15 +88,15 @@
             {% endfor %}
         </div>
         {% if banners|length > 1 %}
-        <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/40 hover:bg-white/60 backdrop-blur-md p-3 rounded-full text-white shadow-lg">
+        <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/40 hover:bg-white/60 backdrop-blur-md p-3 rounded-full text-white shadow-lg transition-all duration-300">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/40 hover:bg-white/60 backdrop-blur-md p-3 rounded-full text-white shadow-lg">
+        <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/40 hover:bg-white/60 backdrop-blur-md p-3 rounded-full text-white shadow-lg transition-all duration-300">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
         </button>
         <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-10">
             {% for banner in banners %}
-            <button onclick="goToSlide({{ forloop.counter0 }})" class="dot w-3 h-3 rounded-full {% if forloop.first %}bg-white w-8{% else %}bg-white/50{% endif %}" data-dot="{{ forloop.counter0 }}"></button>
+            <button onclick="goToSlide({{ forloop.counter0 }})" class="dot w-3 h-3 rounded-full transition-all duration-300 {% if forloop.first %}bg-white w-8{% else %}bg-white/50{% endif %}" data-dot="{{ forloop.counter0 }}"></button>
             {% endfor %}
         </div>
         {% endif %}
@@ -104,14 +113,14 @@
 
             <form method="GET" action="{% url 'books:book_list' %}" class="flex flex-wrap gap-3 items-center">
                 
-                <select name="category" onchange="this.form.submit()" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 transition text-sm font-medium shadow-lg">
+                <select name="category" onchange="this.form.submit()" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition text-sm font-medium shadow-sm hover:border-gray-300">
                     <option value="">All Categories</option>
                     {% for cat in categories %}
                         <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>{{ cat.name }}</option>
                     {% endfor %}
                 </select>
 
-                <select name="sort" onchange="this.form.submit()" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 transition text-sm font-medium shadow-lg">
+                <select name="sort" onchange="this.form.submit()" class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition text-sm font-medium shadow-sm hover:border-gray-300">
                     <option value="">Sort: Featured</option>
                     <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low → High</option>
                     <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High → Low</option>
@@ -120,8 +129,14 @@
                     <option value="created_at" {% if selected_sort == 'created_at' %}selected{% endif %}>Oldest</option>
                 </select>
 
-                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition">Filter</button>
-                <button type="button" onclick="window.location.href='{% url 'books:book_list' %}'" class="px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-bold shadow-lg hover:bg-gray-50">Clear</button>
+                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                    Apply Filters
+                </button>
+                <button type="button" onclick="window.location.href='{% url 'books:book_list' %}'" class="px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-semibold shadow-md hover:shadow-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    Clear All
+                </button>
             </form>
         </div>
     </div>
@@ -130,20 +145,20 @@
     {% if books %}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {% for book in books %}
-        <div class="book-card bg-white rounded-2xl shadow-lg border-2 border-gray-100 overflow-hidden group relative">
-            <div class="relative book-image aspect-[3/4] bg-gradient-to-br from-emerald-100 to-teal-100">
+        <div class="book-card bg-white rounded-2xl shadow-md hover:shadow-2xl border border-gray-200 overflow-hidden group relative">
+            <div class="relative book-image aspect-[3/4] bg-gradient-to-br from-gray-50 to-gray-100">
                 {% if book.image %}
-                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-full h-full object-cover animate-float">
+                    <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-full h-full object-cover">
                 {% else %}
                     <div class="w-full h-full flex items-center justify-center">
-                        <svg class="w-24 h-24 text-emerald-300 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13"/>
+                        <svg class="w-24 h-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
                     </div>
                 {% endif %}
 
                 <div class="absolute top-4 left-4">
-                    <span class="px-4 py-2 text-xs font-bold rounded-full shadow-lg
+                    <span class="px-4 py-2 text-xs font-bold rounded-full shadow-md backdrop-blur-sm
                         {% if book.condition == 'new' %}bg-emerald-500 text-white
                         {% elif book.condition == 'good' %}bg-yellow-500 text-white
                         {% else %}bg-gray-500 text-white{% endif %}">
@@ -154,32 +169,49 @@
 
             <div class="p-6">
                 <a href="{% url 'books:book_detail' book.id %}">
-                    <h3 class="font-bold text-lg text-gray-900 mb-2 line-clamp-2 hover:text-emerald-600 transition">{{ book.title }}</h3>
+                    <h3 class="font-bold text-lg text-gray-900 mb-2 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{{ book.title }}</h3>
                 </a>
-                <p class="text-sm text-gray-600 mb-2">by <strong>{{ book.author }}</strong></p>
-                <p class="text-sm text-gray-600 mb-2">Category: {{ book.category.name }}</p>
+                <p class="text-sm text-gray-600 mb-2">by <strong class="text-gray-800">{{ book.author }}</strong></p>
+                <p class="text-sm text-gray-500 mb-3">
+                    <span class="inline-flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                        {{ book.category.name }}
+                    </span>
+                </p>
 
                 {% comment %} Check if it's a donation (price is None) {% endcomment %}
                 {% if book.price is None %}
-                    <p class="text-2xl font-black text-orange-600 mb-4">Free <span class="bg-orange-100 px-3 py-1 text-xs font-bold rounded-full">Donated</span></p>
+                    <p class="text-2xl font-black text-orange-600 mb-4 flex items-center gap-2">
+                        FREE 
+                        <span class="bg-orange-100 text-orange-700 px-3 py-1 text-xs font-bold rounded-full">Donated</span>
+                    </p>
                 {% else %}
                     <p class="text-3xl font-black text-emerald-600 mb-4">${{ book.price }}</p>
                 {% endif %}
 
-                <div class="flex flex-col md:flex-row gap-2">
+                <div class="flex flex-col gap-3">
                     {% if book.price is not None %}
                         {# Regular book: Add to Cart #}
-                        <form method="POST" action="{% url 'cart:cart_add' book.id %}" class="flex-1">
+                        <form method="POST" action="{% url 'cart:cart_add' book.id %}" class="w-full">
                             {% csrf_token %}
-                            <button type="submit" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 
-                  text-white py-3 rounded-md font-semibold text-center shadow-lg transform hover:scale-105 transition-all duration-300">Add to Cart </button>
+                            <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 
+                  text-white py-3.5 rounded-lg font-semibold shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                Add to Cart
+                            </button>
                         </form>
                     {% else %}
                         {# Donation: Request button #}
-                        <a href="{% url 'donations:request_donated_book' book.id %}" class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 text-white py-3 rounded-xl font-bold shadow-lg hover:scale-105 text-center">Request</a>
+                        <a href="{% url 'donations:request_donated_book' book.id %}" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-3.5 rounded-lg font-semibold shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"/></svg>
+                            Request Book
+                        </a>
                     {% endif %}
 
-                    <a href="{% url 'books:book_detail' book.id %}" class="flex-1 bg-white border-2 border-emerald-600 text-emerald-600 py-3 rounded-xl font-bold text-center hover:bg-emerald-50 transition">Details</a>
+                    <a href="{% url 'books:book_detail' book.id %}" class="w-full bg-white border-2 border-emerald-600 text-emerald-600 py-3.5 rounded-lg font-semibold hover:bg-emerald-50 hover:border-emerald-700 transition-all duration-300 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        View Details
+                    </a>
                 </div>
             </div>
         </div>
@@ -189,12 +221,15 @@
     <div class="text-center py-24 animate-slideUp">
         <div class="inline-flex items-center justify-center w-28 h-28 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full mb-8 animate-float">
             <svg class="w-16 h-16 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
             </svg>
         </div>
         <h3 class="text-3xl font-bold text-gray-900 mb-3">No Books Available</h3>
         <p class="text-gray-600 mb-8 max-w-md mx-auto text-lg">We're updating our inventory. Check back soon!</p>
-        <a href="{% url 'donations:donate_book' %}" class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:scale-105">Donate a Book</a>
+        <a href="{% url 'donations:donate_book' %}" class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            Donate a Book
+        </a>
     </div>
     {% endif %}
 </div>
@@ -204,17 +239,40 @@ let currentSlide = 0;
 const slides = document.querySelectorAll('.banner-slide');
 const dots = document.querySelectorAll('.dot');
 const totalSlides = slides.length;
+
 function showSlide(n) {
     if (totalSlides === 0) return;
     currentSlide = (n + totalSlides) % totalSlides;
-    slides.forEach((s, i) => s.classList.toggle('opacity-100', i === currentSlide));
-    dots.forEach((d, i) => d.classList.toggle('bg-white', i === currentSlide));
+    slides.forEach((s, i) => {
+        s.classList.toggle('opacity-100', i === currentSlide);
+        s.classList.toggle('opacity-0', i !== currentSlide);
+    });
+    dots.forEach((d, i) => {
+        if (i === currentSlide) {
+            d.classList.add('bg-white', 'w-8');
+            d.classList.remove('bg-white/50');
+        } else {
+            d.classList.remove('bg-white', 'w-8');
+            d.classList.add('bg-white/50');
+        }
+    });
 }
+
 function nextSlide() { showSlide(currentSlide + 1); }
 function prevSlide() { showSlide(currentSlide - 1); }
 function goToSlide(n) { showSlide(n); }
-if (totalSlides > 1) setInterval(nextSlide, 5000);
-</script>
 
+if (totalSlides > 1) {
+    setInterval(nextSlide, 5000);
+}
+
+// Add stagger animation to book cards
+document.addEventListener('DOMContentLoaded', function() {
+    const bookCards = document.querySelectorAll('.book-card');
+    bookCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
+});
+</script>
 
 {% endblock %}

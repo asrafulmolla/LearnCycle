@@ -1,4 +1,3 @@
-# accounts/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -15,7 +14,6 @@ def register(request):
             user = form.save()
             phone = request.POST.get('full_phone')
             address = request.POST.get('address')
-            # ✅ Safely get or create profile
             profile, created = Profile.objects.get_or_create(user=user)
             profile.phone = phone
             profile.address = address
@@ -45,7 +43,6 @@ def user_logout(request):
 
 @login_required
 def profile(request):
-    # ✅ Ensure profile exists before using it
     profile_obj, created = Profile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
@@ -60,14 +57,14 @@ def profile(request):
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=profile_obj)
 
-    # Get fulfilled requests with book links
+
     matched_requests = BookRequest.objects.filter(
         user=request.user,
         is_fulfilled=True,
         matched_book__isnull=False
     ).select_related('matched_book')
 
-     # Get donation requests (buyer history for donations)
+
     donation_requests = BookRequest.objects.filter(
         user=request.user,
         donation__isnull=False
