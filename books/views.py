@@ -193,21 +193,32 @@ def book_list(request):
 
 
 def book_detail(request, id):
-    # Try to get from Book model first
-    try:
-        book = Book.objects.get(id=id)
-        related_books = Book.objects.filter(
-            category=book.category,
-            is_available=True
-        ).exclude(id=book.id)[:4]
-    except Book.DoesNotExist:
-        # If not found, try Donation model
-        book = get_object_or_404(Donation, id=id, status='approved')
-        related_books = Donation.objects.filter(
-            category=book.category,
-            status='approved'
-        ).exclude(id=book.id)[:4]
-    
+    print("In book_detail view")
+    # Normal book
+    book = get_object_or_404(Book, id=id, is_available=True)
+
+    # Related normal books
+    related_books = Book.objects.filter(
+        category=book.category,
+        is_available=True
+    ).exclude(id=book.id)[:4]
+
+    return render(request, 'books/detail.html', {
+        'book': book,
+        'related_books': related_books
+    })
+
+def donation_book_detail(request, id):
+    print("In donation_book_detail view")
+    # Approved donation book only
+    book = get_object_or_404(Donation, id=id, status='approved')
+
+    # Related donation books
+    related_books = Donation.objects.filter(
+        category=book.category,
+        status='approved'
+    ).exclude(id=book.id)[:4]
+
     return render(request, 'books/detail.html', {
         'book': book,
         'related_books': related_books

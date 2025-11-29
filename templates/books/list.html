@@ -143,7 +143,7 @@
 
     <!-- Books Grid -->
     {% if books %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {% for book in books %}
         <div class="book-card bg-white rounded-2xl shadow-md hover:shadow-2xl border border-gray-200 overflow-hidden group relative">
             <div class="relative book-image aspect-[3/4] bg-gradient-to-br from-gray-50 to-gray-100">
@@ -168,9 +168,7 @@
             </div>
 
             <div class="p-6">
-                <a href="{% url 'books:book_detail' book.id %}">
-                    <h3 class="font-bold text-lg text-gray-900 mb-2 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{{ book.title }}</h3>
-                </a>
+                <h3 class="font-bold text-lg text-gray-900 mb-2 line-clamp-2 hover:text-emerald-600 transition-colors duration-300">{{ book.title }}</h3>
                 <p class="text-sm text-gray-600 mb-2">by <strong class="text-gray-800">{{ book.author }}</strong></p>
                 <p class="text-sm text-gray-500 mb-3">
                     <span class="inline-flex items-center gap-1">
@@ -208,10 +206,21 @@
                         </a>
                     {% endif %}
 
-                    <a href="{% url 'books:book_detail' book.id %}" class="w-full bg-white border-2 border-emerald-600 text-emerald-600 py-3.5 rounded-lg font-semibold hover:bg-emerald-50 hover:border-emerald-700 transition-all duration-300 flex items-center justify-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        View Details
-                    </a>
+                    {% if book.price is None %}
+                        {# Donation Book URL #}
+                        <a href="{% url 'books:donation_book_detail' book.id %}"
+                        class="w-full bg-white border-2 border-emerald-600 text-emerald-600 py-3.5 rounded-lg font-semibold hover:bg-emerald-50 hover:border-emerald-700 transition-all duration-300 flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            View Donation
+                        </a>
+                    {% else %}
+                        {# Normal Book URL #}
+                        <a href="{% url 'books:book_detail' book.id %}"
+                        class="w-full bg-white border-2 border-emerald-600 text-emerald-600 py-3.5 rounded-lg font-semibold hover:bg-emerald-50 hover:border-emerald-700 transition-all duration-300 flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            View Book
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -271,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const bookCards = document.querySelectorAll('.book-card');
     bookCards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
+        card.style.opacity = '0'; // reset for animation
     });
 });
 </script>

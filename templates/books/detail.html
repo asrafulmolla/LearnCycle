@@ -99,7 +99,7 @@
             Add to Cart
         </a>
     {% else %}
-        <a href="{% url 'request_donated_book' book.id %}" 
+        <a href="{% url 'donations:request_donated_book' book.id %}" 
            class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 
                   text-white py-3 rounded-xl font-semibold text-center shadow-lg transform hover:scale-105 transition-all duration-300">
             Request This Book

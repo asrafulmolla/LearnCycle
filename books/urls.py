@@ -7,6 +7,7 @@ app_name = 'books' # ← This is REQUIRED for namespacing
 urlpatterns = [
     path('', views.book_list, name='book_list'),
     path('book/<int:id>/', views.book_detail, name='book_detail'),
+    path('donation-book/<int:id>/', views.donation_book_detail, name='donation_book_detail'),
     path('about/', views.about, name='about'),
     path('sell/', views.sell_book, name='sell_book'),
     path('seller-books/', views.seller_books, name='seller_books'),
